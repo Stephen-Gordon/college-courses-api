@@ -1,15 +1,25 @@
 
-import LoginForm from "../components/auth/LoginForm";
+import { Link } from "react-router-dom";
+
 const Home = (props) => {
-  return (
-    <>
-        
-        
+
+  if (props.authenticated){
+    return (
+      <>
         <h1>Home</h1>
-        <LoginForm authenticated={props.authenticated} onAuthenticated={props.onAuthenticated}/>
-    
+      </>
+    );
+}else {
+  return (
+    <>  
+      <h1>Home</h1>
+      <Link  to='/login'>Login</Link>
+      <Link  to='/register'>Register</Link>
     </>
   );
+  
+}
+  
 }
 
 export default Home;

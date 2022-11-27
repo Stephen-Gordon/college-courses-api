@@ -10,11 +10,7 @@ const FestivalCreate = () => {
        
        
     });
-   /*  title:"",
-    description:"",
-    city: "",
-    start_date:"",
-    end_date:"" */
+  
 
     const handleForm = (e) => {
         setForm((prevState) => ({

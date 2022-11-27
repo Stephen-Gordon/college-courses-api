@@ -26,7 +26,7 @@ const FestivalCreate = () => {
 
     const submitForm = () => {
         let token = localStorage.getItem('token')
-        axios.post('https://festivals-api.herokuapp.com/api/festivals', form,
+        axios.post('/courses', form,
         {
             headers: {
                 "authorization": `Bearer ${token}`

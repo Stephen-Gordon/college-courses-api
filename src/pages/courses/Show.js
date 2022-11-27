@@ -14,7 +14,7 @@ let token = localStorage.getItem('token');
 
 
     useEffect(() => {
-        axios.get(`https://festivals-api.herokuapp.com/api/festivals/${id}`, {
+        axios.get(`/courses/${id}`, {
             headers:{
                 "Authorization": `Bearer ${token}`
             }

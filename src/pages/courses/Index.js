@@ -15,7 +15,7 @@ const Index = ( props) => {
     const [festivals, setFestivals] = useState(null);
 
     useEffect(() => {
-        axios.get('https://festivals-api.vercel.app/api/festivals')
+        axios.get('/courses')
         .then((response) => {
             console.log(response.data)
             setFestivals(response.data)

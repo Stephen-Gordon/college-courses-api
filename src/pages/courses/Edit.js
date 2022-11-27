@@ -1,11 +1,14 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+
 
 import { Grid, TextField, FormControl, Select, MenuItem, InputLabel, Button} from "@mui/material";
 
 const FestivalsEdit = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
+
     const [form, setForm] = useState({
        
        
@@ -26,7 +29,7 @@ const FestivalsEdit = () => {
 
     const submitForm = () => {
         let token = localStorage.getItem('token')
-        axios.post('https://festivals-api.herokuapp.com/api/festivals', form,
+        axios.put(`/courses/${id}`, form,
         {
             headers: {
                 "authorization": `Bearer ${token}`
