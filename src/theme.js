@@ -7,26 +7,35 @@ const customtheme = createTheme({
             secondary: '#053e85',
         },
         background: {
-          paper: '#1f1f27', // your color
-          default:'#13131b',
-          white: "#FFFFFF",
+          default:'#1e2024',  //primary background
+          primary:'#1e2024',
+          secondary: '#232529',   //secondary background color
+          white: "#f7f7f7",   //white
+          blue: '#1892ed',
+          lightBlue: '#38a9ff',
+          red: 'f52a59',
+          darkRed: 'f52a59'   
         },
         customCard: {
-            white: "#FFFFFF",
+            white: "#f7f7f7",
             light: "#b9b9c7",
-            purple: "#4d61f7",
+            blue: "#4d61f7",
           },
-          typography: {
-            main: '#FFFFFF',
-            white: "#FFFFFF",
-          },  
+        typography: {
+          main: '#f7f7f7',
+          white: "#f7f7f7",
+          blue: '#1892ed',
+          lightBlue: '#38a9ff',
+          red: 'f52a59',
+          darkRed: 'f52a59'
+        },  
 
       },
       
       
     });
 
-/* https://coolors.co/1f1f27 */
+/* https://coolors.co/1e2024 */
 
 export default customtheme
 

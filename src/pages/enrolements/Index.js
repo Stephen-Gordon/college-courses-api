@@ -12,49 +12,56 @@ import { Link } from 'react-router-dom';
 
 const Index = ( props) => {
 
-    const [festivals, setFestivals] = useState(null);
+    let token = localStorage.getItem('token')
+
+    const [enrolements, setEnrolements] = useState(null);
 
     useEffect(() => {
-        axios.get('https://festivals-api.vercel.app/api/festivals')
+        axios.get('https://college-api-mo.herokuapp.com/api/enrolements', {
+            headers:{
+                "Authorization": `Bearer ${token}`
+            }
+        })
         .then((response) => {
-            console.log(response.data)
-            setFestivals(response.data)
+           
+            setEnrolements(response.data)
+            
         })
         .catch((err) => {
             console.error(err)
         });
-    }, [])
+    }, [token])
 
-    if(!festivals) return <h3>There are no festivals</h3>
+    if(!enrolements) return <h3>There are no enrolements</h3>
+    console.log(enrolements)
 
-
-    const festivalsList = festivals.map(festival => {
+    const enrolementsList = enrolements.data.map(enrolement => {
         return (
             <>
-                <div key={festival._id} >
+                <div key={enrolement.id} >
                     
                         <p>Title: {(props.authenticated) ? (
-                            <Link  to={`/festivals/${festival._id}`}> {festival.title} </Link>
+                            <Link  to={`/enrolements/${enrolement.id}`}> {enrolement.title} </Link>
                         ): (
-                           <p> {festival.title} </p>
+                           <p> {enrolement.title} </p>
                         )} </p>
                     
                     <br></br>
-                    <p>Description: {festival.description}</p>
+                    <p>Description: {enrolement.description}</p>
                     <hr></hr>                    
                 </div>
             </>
         )
     })
-
+ 
 
     return(
         <>
-            <h2>Fesitval Index</h2>
-            {festivalsList}
+            <h2>enrolements Index</h2>
+            {enrolementsList} 
         </>
     )
-
+ 
 };
 
 export default Index;

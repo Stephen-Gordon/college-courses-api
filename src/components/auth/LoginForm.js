@@ -1,11 +1,21 @@
-import axios from 'axios';
-import { useState } from "react"
+//Hooks
+import { useState } from "react";
 
+
+//Axios
+import axios from 'axios';
+
+//NAV
+import { useNavigate, Link } from "react-router-dom";
+
+//MUI
 import { styled } from '@mui/system';
-import customtheme from '../../theme'
+import theme from '../../theme'
 import {Button, Card, Box, Grid, Container, Typography, TextField, ThemeProvider, InputBase } from '@mui/material';
 
 const LoginForm = (props) => {
+
+    
   
     const [form, setForm] = useState({
         email: "",
@@ -26,19 +36,20 @@ const LoginForm = (props) => {
             ...prevState,
         [e.target.name]: e.target.value
         }));
+        console.log(e.target.value)
     }
 
 
     const handleClick = () => {
         console.log("clicked", form)
-        axios.post('/login', {
+        axios.post('https://college-api-mo.herokuapp.com/api/login ', {
             email: form.email,
             password: form.password
         })
         .then((response) => {
             console.log(response.data)
             //setAuthenticated(true)
-            //props.onAuthenticated(true, response.data.token)
+            props.onAuthenticated(true, response.data.token)
 
         })
         .catch((err) => {
@@ -55,87 +66,93 @@ const LoginForm = (props) => {
         
     
        
-        const CustomTextField = styled(InputBase)(({ theme }) => ({
+        const CustomTextField = styled(TextField)(({ theme }) => ({
         'label + &': {
-          marginTop: theme.spacing(3),
-        },
-        '& .MuiInputBase-input': {
-          borderRadius: 12,
-          position: 'relative',
-          backgroundColor: theme.palette.background.paper,
-          border: '1px solid #414147',
-          fontSize: 16,
+          marginTop: theme.spacing(10),
           fontColor: theme.palette.typography.white,
-          padding: '10px 26px 10px 12px',
-          transition: theme.transitions.create(['border-color', 'box-shadow']),
-          
+        },
+        '& .MuiFilledInput-input': {
+        borderRadius: 12,
+        position: 'relative',
+        backgroundColor: theme.palette.background.blue,
+        border: '1px solid #1892ed',
+        fontSize: 16,
+        fontColor: theme.palette.typography.white,
+        padding: '10px 26px 10px 12px',
+       
+        '&:hover': {
+            border: '1px solid #1892ed',
+            borderRadius: '12px',
+            backgroundColor: 'transparent'
+          },
           '&:focus': {
-            borderRadius: 6,
-            borderColor: '#414147',
-            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+            backgroundColor: 'transparent'
           },
         },
       }));
-     
 
+      
+     
 
     return (
         <>  
         <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        style={{ minHeight: '100vh' }}>
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            style={{ minHeight: '100vh' }}>
             
-            <Card sx={{ mt:4, pb:5, color: 'customCard.white', border: '1px solid #414147', borderRadius: '6px' }}>
-                
-              
-                    
-
-                    <Grid cointainer sx={{pl:5, pr:5, pt:5, display: 'flex', flexWrap: 'wrap'}}>
+            <Grid sx={{ mt:4, pb:5}}>
+ 
+                    <Grid  maxWidth="sm"  container sx={{pl:5, pr:5, pt:5, display: 'flex', flexWrap: 'wrap'}}>
                     
                         {/* Email */}
-                        <Grid sx={{pr:3}} item lg={12} md={12} sm={12} xs={12} >
-                            <CustomTextField
+
+                        {/* <Grid item lg={12} md={12} sm={12} xs={12} >
+                            <CustomTextField 
                                 inputProps={{
-                                style: {color: 'white', border: '1px solid #414147', borderRadius: '12px' } 
-                                }}
+                                    style: {color: 'white', } 
+                                    }}
                                 fullWidth  
                                 id="email" 
                                 label="Email" 
-                                variant="outlined" 
-                                name='password' 
+                                name='email'
+                                type="text"
                                 onChange={handleForm}
-                                sx={{ m:1 }}
+                                sx={{backgroundColor: theme.palette.background.secondary, borderRadius: '12px'}}
+                             
+                               
                                 />
-                        </Grid>
+                        </Grid> */}
 
                         {/* Password */}
-
-                        <Grid sx={{pr:3}} item lg={12} md={12} sm={12} xs={12} >
-                            <TextField
-                            inputProps={{
-                                style: {color: 'white', border: '1px solid #414147', borderRadius: '12px' } 
+{/* 
+                        <Grid sx={{mt:5}} item lg={12} md={12} sm={12} xs={12} >
+                            <CustomTextField 
+                                inputProps={{
+                                    style: {color: 'white',} 
                                 }}
-                                fullWidth 
+                                fullWidth  
                                 id="password" 
-                                label="Password"
-                                type="password"
-                                autoComplete="current-password"
-                                variant="filled"
-                                borderRadius="6px"
-                                name='email' 
+                                label="Password" 
+                                name='password'
+                                type="text"
                                 onChange={handleForm}
-                                sx={{ m:1 }}
-                            />
-                        </Grid>
+                                sx={{backgroundColor: theme.palette.background.secondary, borderRadius: '12px'}}
+                                />
+                        </Grid> */}
                         
-                        <Button  sx={{ mt:4, pb:3, pt:3, pl:5, pr:5, color: 'customCard.white', border: '1px solid #414147', borderRadius: '12px'  }}  onClick={handleClick}>Sign in</Button>
+                        <Button fullWidth sx={{ mt:4, pb:3, pt:3, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px', backgroundColor: theme.palette.background.blue }} onClick={handleClick}>Sign in</Button>
+                        <Button fullWidth sx={{ mt:4, pb:3, pt:3, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px'  }}  component={Link} to='/register' >Register</Button>
 
-                <p style={errorStyle}>{errorMessage}</p>
+                        <p style={errorStyle}>{errorMessage}</p>
                          
+            Email: <input type='text' name='email' onChange={handleForm}/>
+            Password: <input type='text' name='password' onChange={handleForm}/>
+            <button onClick={handleClick}>Submit</button>
+            <p style={errorStyle}>{errorMessage}</p>
                             
 
                   
@@ -145,7 +162,7 @@ const LoginForm = (props) => {
 
 
                     
-            </Card>
+            </Grid>
     </Grid>
         </>
     );

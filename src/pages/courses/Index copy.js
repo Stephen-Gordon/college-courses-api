@@ -33,10 +33,9 @@ const Index = ( props) => {
         });
     }, [token])
 
-    const handleChange = (data) => {
-        
-        console.log(data)
-    }
+const handleChange = (e) => {
+    console.log(e.target.value)
+}
     const ODD_OPACITY = 0.2;
     
     const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
@@ -96,24 +95,10 @@ const Index = ( props) => {
     if(!courses) return <h3>There are no courses</h3>
 
     return (
-        <><ThemeProvider theme={theme}>
+        <>
+        <ThemeProvider theme={theme}>
             <Box sx={{ height: 400, width: '100%' }}>
-                <StripedDataGrid
-                     getRowClassName={(params) =>
-                        params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
-                      }
-                      
-                    sx={{mt:5, color: theme.palette.typography.white,}}
-                    rows={rows}
-                    columns={columns}
-                    pageSize={5}
-                    rowsPerPageOptions={[5]}
-                    checkboxSelection
-                    disableSelectionOnClick
-                    onSelectionModelChange={handleChange}
-                    experimentalFeatures={{ newEditingApi: true }}
-                    
-                />
+                
             </Box>
             </ThemeProvider>
         </>

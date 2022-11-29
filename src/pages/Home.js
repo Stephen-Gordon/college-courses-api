@@ -1,6 +1,4 @@
-
-import { Link } from "react-router-dom";
-
+import LoginForm from "../components/auth/LoginForm";
 const Home = (props) => {
 
   if (props.authenticated){
@@ -12,9 +10,7 @@ const Home = (props) => {
 }else {
   return (
     <>  
-      <h1>Home</h1>
-      <Link  to='/login'>Login</Link>
-      <Link  to='/register'>Register</Link>
+      <LoginForm authenticated={props.authenticated} onAuthenticated={props.onAuthenticated}/>
     </>
   );
   
