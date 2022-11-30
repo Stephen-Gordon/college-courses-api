@@ -11,10 +11,12 @@ const customtheme = createTheme({
           primary:'#1e2024',
           secondary: '#232529',   //secondary background color
           white: "#f7f7f7",   //white
+          light: "#edeff4",
           blue: '#1892ed',
           lightBlue: '#38a9ff',
-          red: 'f52a59',
-          darkRed: 'f52a59'   
+          red: '#f52a59',
+          darkRed: '#f52a59',
+          border: '#494E58'
         },
         customCard: {
             white: "#f7f7f7",
@@ -22,8 +24,8 @@ const customtheme = createTheme({
             blue: "#4d61f7",
           },
         typography: {
-          main: '#f7f7f7',
-          white: "#f7f7f7",
+          main: '#EEEFF1',
+          white: "#EEEFF1",
           blue: '#1892ed',
           lightBlue: '#38a9ff',
           red: 'f52a59',

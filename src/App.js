@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 //MUI
 import customtheme from './theme'
-import { Container, ThemeProvider, CssBaseline } from "@mui/material";
+import { Grid, ThemeProvider, CssBaseline } from "@mui/material";
 
 
 //PAGES
@@ -53,7 +53,7 @@ useEffect(()=> {
   }
 }, [])
 
-//const auth = false
+
 const onAuthenticated = (auth, token) => {
   setAuthenticated(auth);
   if(auth){
@@ -69,16 +69,17 @@ if(authenticated){
     <>
 
       <Route path='/courses/create' element={<CoursesCreate/>}/>
-      <Route path='/courses:id/edit' element={<CoursesEdit/>}/>
-      <Route path='/courses:id' element={<CoursesShow/>}/>
+      <Route path='/courses/:id/edit' element={<CoursesEdit/>}/>
+      <Route path='/courses/:id' element={<CoursesShow/>}/>
+      
 
       <Route path='/lecturers/create' element={<LecturersCreate/>}/>
-      <Route path='/lecturers:id/edit' element={<LecturersEdit/>}/>
-      <Route path='/lecturers:id' element={<LecturersShow/>}/>
+      <Route path='/lecturers/:id/edit' element={<LecturersEdit/>}/>
+      <Route path='/lecturers/:id' element={<LecturersShow/>}/>
 
       <Route path='/enrolements/create' element={<EnrolementsCreate/>}/>
-      <Route path='/enrolements:id/edit' element={<EnrolementsEdit/>}/>
-      <Route path='/enrolements:id' element={<EnrolementsShow/>}/>
+      <Route path='/enrolements/:id/edit' element={<EnrolementsEdit/>}/>
+      <Route path='/enrolements/:id' element={<EnrolementsShow/>}/>
        
     </>
   )
@@ -89,7 +90,7 @@ if(authenticated){
     <CssBaseline>
     <Router>
       <Navbar authenticated={authenticated}/>
-        <Container>
+        <Grid>
           <Routes>
 
 
@@ -104,7 +105,7 @@ if(authenticated){
 
             {/* COURSES */}
             <Route path='/courses' element={<CoursesIndex authenticated={authenticated}/>}/>
-            <Route path='/courses:id' element={<CoursesShow/>}/>
+           
 
             {/* LECTURERS */}
             <Route path='/lecturers' element={<LecturersIndex authenticated={authenticated}/>}/>
@@ -117,14 +118,14 @@ if(authenticated){
             {/* PROTECTED */}
             {protectedRoutes}
 
-          <Route path='*' element={<PageNotFound/>}/>
+          {/* <Route path='*' element={<PageNotFound/>}/> */}
 
 
 
 
 
           </Routes>
-        </Container>
+        </Grid>
         
       </Router>
     </CssBaseline>

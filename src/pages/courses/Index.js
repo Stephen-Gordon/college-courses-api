@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 
 
 //mui
+import { Toolbar } from '@mui/material';
 import { Box, ThemeProvider } from '@mui/system';
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { alpha, styled } from '@mui/material/styles';
@@ -41,6 +42,9 @@ const Index = ( props) => {
     
     const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
         [`& .${gridClasses.row}`]: {
+        '& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell': {
+            borderBottom: `1px solid ${theme.palette.background.border}` ,
+            },
         backgroundColor: theme.palette.background.secondary,
         color: theme.palette.typography.white,
         '&:hover, &.Mui-hovered': {
@@ -61,6 +65,7 @@ const Index = ( props) => {
                 theme.palette.action.selectedOpacity +
                 theme.palette.action.hoverOpacity,
             ),
+            
             // Reset on touch devices, it doesn't add specificity
             '@media (hover: none)': {
                 backgroundColor: alpha(
@@ -75,9 +80,9 @@ const Index = ( props) => {
 
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
-        { field: 'courseTitle', headerName: 'Title',  width: 200},
-        { field: 'code', headerName: 'code',  width: 100}
+        { field: 'id', headerName: 'ID', flex: 1 },
+        { field: 'courseTitle', headerName: 'Title',  flex: 1},
+        { field: 'code', headerName: 'code',  flex: 1}
       ];
 
 
@@ -96,14 +101,15 @@ const Index = ( props) => {
     if(!courses) return <h3>There are no courses</h3>
 
     return (
-        <><ThemeProvider theme={theme}>
+        <>
+        <ThemeProvider theme={theme}>
             <Box sx={{ height: 400, width: '100%' }}>
                 <StripedDataGrid
                      getRowClassName={(params) =>
                         params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
                       }
                       
-                    sx={{mt:5, color: theme.palette.typography.white,}}
+                  
                     rows={rows}
                     columns={columns}
                     pageSize={5}
@@ -112,9 +118,19 @@ const Index = ( props) => {
                     disableSelectionOnClick
                     onSelectionModelChange={handleChange}
                     experimentalFeatures={{ newEditingApi: true }}
+                    sx={{
+                        mt:5, 
+                        color: theme.palette.typography.light,
+                        ml: '15%',
+                        border: 1,
+                        borderColor: theme.palette.background.border,
+                        
+                      }}
+                      
                     
                 />
             </Box>
+            
             </ThemeProvider>
         </>
     )
