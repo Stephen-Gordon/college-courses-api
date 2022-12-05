@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 
 //Axios
-import axios from 'axios';
+import axios from '../../config/api'
 
 //NAV
 import { useNavigate, Link } from "react-router-dom";
@@ -42,7 +42,7 @@ const Register = (props) => {
 
     const handleClick = () => {
         console.log("clicked", form)
-        axios.post('https://college-api-mo.herokuapp.com/api/register', {
+        axios.post('/register', {
             email: form.name,
             email: form.email,
             password: form.password

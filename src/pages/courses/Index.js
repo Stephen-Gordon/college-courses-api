@@ -2,10 +2,10 @@
 import { useEffect, useState } from 'react';
 
 //Axios
-import axios from 'axios'
+import axios from '../../config/api'
 
 //Router
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 //mui
@@ -15,13 +15,13 @@ import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { alpha, styled } from '@mui/material/styles';
 import theme from '../../theme'
 const Index = ( props) => {
-
+    const navigate = useNavigate();
     let token = localStorage.getItem('token')
 
     const [courses, setCourses] = useState(null);
 
     useEffect(() => {
-        axios.get('https://college-api-mo.herokuapp.com/api/courses', {
+        axios.get('/courses/', {
             headers:{
                 "Authorization": `Bearer ${token}`
             }
@@ -34,36 +34,38 @@ const Index = ( props) => {
         });
     }, [token])
 
-    const handleChange = (data) => {
-        
-        console.log(data)
-    }
+    
     const ODD_OPACITY = 0.2;
     
     const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
         [`& .${gridClasses.row}`]: {
-        '& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell': {
-            borderBottom: `1px solid ${theme.palette.background.border}` ,
-            },
-        backgroundColor: theme.palette.background.secondary,
+        '& .MuiDataGrid-columnsContainer, .MuiDataGrid-columnHeaders, .MuiDataGrid-cell, .MuiDataGrid-cell:focus-within': {
+        outline: 'none',
+        //border: 'none',
+        borderTop: `0px solid ${theme.palette.background.border}`,
+        borderBottom: `0px solid ${theme.palette.background.border}`,
+        },
+        borderRadius: '6px',
+        marginBottom: 8,
         color: theme.palette.typography.white,
         '&:hover, &.Mui-hovered': {
-            backgroundColor: alpha(theme.palette.background.secondary, ODD_OPACITY),
+            backgroundColor: alpha(theme.palette.background.border, ODD_OPACITY),
             '@media (hover: none)': {
-            backgroundColor: 'transparent',
+            backgroundColor: 'transparent'
             },
         },
         '&.Mui-selected': {
             backgroundColor: alpha(
-            theme.palette.background.secondary,
-            ODD_OPACITY + theme.palette.action.selectedOpacity,
+                theme.palette.background.border, ODD_OPACITY
             ),
             '&:hover, &.Mui-hovered': {
+                
             backgroundColor: alpha(
-                theme.palette.background.secondary,
+                theme.palette.background.border,
                 ODD_OPACITY +
                 theme.palette.action.selectedOpacity +
                 theme.palette.action.hoverOpacity,
+                
             ),
             
             // Reset on touch devices, it doesn't add specificity
@@ -77,10 +79,10 @@ const Index = ( props) => {
         },
         },
     }));
-
-
+   
+      
     const columns = [
-        { field: 'id', headerName: 'ID', flex: 1 },
+        { field: 'id', headerName: 'ID', flex: 1,  },
         { field: 'courseTitle', headerName: 'Title',  flex: 1},
         { field: 'code', headerName: 'code',  flex: 1}
       ];
@@ -90,11 +92,18 @@ const Index = ( props) => {
 
     if (courses){
         for (let i = 0; i < courses.data?.length; i++) {
-            rows.push( { id: courses.data[i]?.id, courseTitle: courses.data[i]?.title, code: courses.data[i]?.code})      
+            rows.push( { 
+                id: courses.data[i]?.id,
+                courseTitle: courses.data[i]?.title,
+                code: courses.data[i]?.code})      
        }
     }
     
-
+    const rowClick = (data) => {
+        console.log("Hi")
+        console.log(data.id)
+        navigate(`/courses/${data.id}`)
+    }
 
 
 
@@ -108,22 +117,24 @@ const Index = ( props) => {
                      getRowClassName={(params) =>
                         params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
                       }
-                      
-                  
+                
+                    onRowClick={rowClick}
                     rows={rows}
                     columns={columns}
                     pageSize={5}
                     rowsPerPageOptions={[5]}
                     checkboxSelection
                     disableSelectionOnClick
-                    onSelectionModelChange={handleChange}
+                    //onSelectionModelChange={handleChange}
                     experimentalFeatures={{ newEditingApi: true }}
                     sx={{
                         mt:5, 
                         color: theme.palette.typography.light,
                         ml: '15%',
-                        border: 1,
+                        border: 0,
                         borderColor: theme.palette.background.border,
+                        fontSize: '24px',
+                        
                         
                       }}
                       

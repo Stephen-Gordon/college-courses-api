@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import axios from '../../config/api'
 
 
 import { Grid, TextField, FormControl, Select, MenuItem, InputLabel, Button} from "@mui/material";
