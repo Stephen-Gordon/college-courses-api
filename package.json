@@ -6,7 +6,6 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/inter": "^4.5.14",
-    "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.10.15",
     "@mui/material": "^5.10.15",
     "@mui/styled-engine-sc": "^5.10.14",
@@ -21,6 +20,7 @@
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
+    "typeface-roboto": "^1.1.13",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

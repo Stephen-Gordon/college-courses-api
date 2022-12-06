@@ -31,12 +31,28 @@ import EnrolementsEdit from './pages/enrolements/Edit';
  
 
 import PageNotFound from './pages/PageNotFound';
+
+
+
 //COMPONENTS
 import Navbar from './components/Navbar';
 import './assets/css/app.css'
 import LoginForm from './components/auth/LoginForm';
 import Register from './components/auth/Register';
 
+import { createTheme } from '@mui/material/styles'
+
+const theme = createTheme({
+  typography: {
+    fontFamily: [
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+  },
+});
 
 
 const App = () => {

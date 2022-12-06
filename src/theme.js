@@ -24,15 +24,19 @@ const customtheme = createTheme({
             blue: "#4d61f7",
           },
         typography: {
+          allVariants: {
+            fontFamily: "'Montserrat', sans-serif",
+            textTransform: "none",
+          },
           main: '#EEEFF1',
           white: "#EEEFF1",
           blue: '#1892ed',
           lightBlue: '#38a9ff',
           red: 'f52a59',
           darkRed: 'f52a59'
-        },  
+         
       
-
+        }
       },
       
       
