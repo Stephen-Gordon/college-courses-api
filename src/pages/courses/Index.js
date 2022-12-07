@@ -5,12 +5,13 @@ import { useEffect, useState } from 'react';
 import axios from '../../config/api'
 
 //Router
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import StripedDataGrid from '../../components/StripedDataGrid';
 
 //mui
 import { Box, ThemeProvider } from '@mui/system';
-
+import {Button} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import theme from '../../theme'
 const Index = ( props) => {
     const navigate = useNavigate();
@@ -39,9 +40,27 @@ const Index = ( props) => {
    
       
     const columns = [
-        { field: 'id', headerName: 'ID', flex: 1,  },
+        { field: 'id', headerName: 'ID', flex: 1, },
         { field: 'courseTitle', headerName: 'Title',  flex: 1},
-        { field: 'code', headerName: 'code',  flex: 1}
+        { field: 'code', headerName: 'code',  flex: 1},
+        { 
+            field: '', 
+            headerName: '', 
+            flex: 1,
+            sortable: false,
+            renderCell: (params) => {
+                return  <Button 
+                startIcon={<EditIcon />} 
+               variant='contained'
+               component={Link}
+               to={`/courses/${params.row.id}/edit`}
+              
+             >
+                Edit
+             </Button>
+
+            }
+        },
       ];
 
 
@@ -90,9 +109,6 @@ const Index = ( props) => {
                         ml: '15%',
                         border: 0,
                         borderColor: theme.palette.background.border,
-                        fontSize: '24px',
-                        
-                        
                       }}
                       
                     

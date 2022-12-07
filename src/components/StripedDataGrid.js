@@ -3,6 +3,8 @@ import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { alpha, styled } from '@mui/material/styles';
 
 const ODD_OPACITY = 0.2;
+
+
 const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
     [`& .${gridClasses.row}`]: {
     '& .MuiDataGrid-columnsContainer, .MuiDataGrid-columnHeaders, .MuiDataGrid-cell, .MuiDataGrid-cell:focus-within': {

@@ -1,104 +1,133 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom";
-import axios from '../../config/api'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from '../../config/api';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Button from '@mui/material/Button';
+import FormHelperText from '@mui/material/FormHelperText';
 
-import { Grid, TextField, FormControl, Select, MenuItem, InputLabel, Button} from "@mui/material";
-
-const FestivalCreate = () => {
+const Create = (props) => {
     const navigate = useNavigate();
-    const [form, setForm] = useState({
-       
-       
-    });
-   /*  title:"",
-    description:"",
-    city: "",
-    start_date:"",
-    end_date:"" */
+    const [form, setForm] = useState({});
+    const [errors, setErrors] = useState({});
 
     const handleForm = (e) => {
         setForm((prevState) => ({
             ...prevState,
-        [e.target.name]: e.target.value
+            [e.target.name]: e.target.value
         }));
-    }
+    };
 
+    const isRequired = (fields) => {
+        let error = false;
+        setErrors({});
+
+        fields.forEach(field => {
+            if(!form[field]){
+                error = true;
+                setErrors((prevState) => ({
+                    ...prevState,
+                    [field]: {
+                        message: `${field} is required!!!!`
+                    }
+                }));
+            }
+        });
+
+
+        return error;
+    };
 
     const submitForm = () => {
-        let token = localStorage.getItem('token')
-        axios.post('/courses', form,
-        {
-            headers: {
-                "authorization": `Bearer ${token}`
-            }
-        })
-            .then((response) => {
-                console.log(response.data)
-                navigate('festivals')
-                
+
+
+        if(!isRequired(['title', 'code', 'description', 'points', 'level'])){
+            let token = localStorage.getItem('token');
+
+            axios.post('/courses', form, {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
             })
-            .catch((err)=> {
-                console.error(err.response.data)
+            .then((response) => {
+                console.log(response.data);
+                navigate('/courses');
+            })
+            .catch((err) => {
+                console.error(err);
+                console.log(err.response.data);
+                setErrors(err.response.data.errors);
             });
-    }
+        }
+
+        
+    };
 
     return (
-        <>
-            <Grid item xs={8}>
-                <h2>Create Festival</h2>
-
-                    {/*     Title    */}
-                    <TextField sx={{ mb:5, }}  label="Title" name="title" variant="outlined" onChange={handleForm} />
+        <Grid item xs={8}>
+            <h2>Create Courses</h2>
             
-
-                    {/*     Desc     */}
-                    <TextField sx={{ mb:5, }}  multiline label="Description" name="description" variant="outlined" onChange={handleForm} />
-                
-
-                    {/*     City     */}
-                    <FormControl sx={{ mb:5, }}  multiline fullWidth>
-                    <InputLabel id="city-select-label">City</InputLabel>
-                        <Select
-                        name="city"
-                        labelId="city-select-label"
-                        id="city-select"
-                        value={"city"}
-                        label="City"
-                        onChange={handleForm}
-                        >
-                        <MenuItem value={"Dublin"}>Dublin</MenuItem>
-                        <MenuItem value={"Cork"}>Cork</MenuItem>
-                        <MenuItem value={"Galway"}>Galway</MenuItem>
-                        <MenuItem value={"Mayo"}>Mayo</MenuItem>
-                        <MenuItem value={"Wexford"}>Wexford</MenuItem>
-                        </Select>
-                </FormControl>
-
-                {/*   Start  Date     */}
-                <TextField sx={{ mb:5, }}  multiline 
-                label="Start Date" 
-                type="datetime-local"
-                name="start_date" 
-                variant="outlined" 
-                onChange={handleForm}
+            <div className='form-group'>
+                <TextField 
+                    label="Title" 
+                    name="title" 
+                    variant="filled" 
+                    onChange={handleForm}
+                   /*  error={errors.title}
+                    helperText={errors.title?.message} */
                 />
-
-
-                {/*    End Date     */}
-                <TextField sx={{ mb:5, }}  multiline 
-                label="End Date" 
-                type="datetime-local"
-                name="end_date" 
-                variant="outlined" 
-                onChange={handleForm}
+            </div>
+            <div className='form-group'>
+                <TextField 
+                    label="Code" 
+                    name="code" 
+                    variant="filled" 
+                    onChange={handleForm}
+                   /*  error={errors.code}
+                    helperText={errors.code?.message} */
                 />
-                </Grid>
-        
-        
-                {/* Submit button */}
-                <Button variant='outlined' onClick={submitForm}>Submit</Button>
-        </>
-    )
+            </div>
+            <div className='form-group'>
+                <TextField 
+                    multiline 
+                    label="Description" 
+                    name="description" 
+                    variant="filled" 
+                    onChange={handleForm} 
+                    /* error={errors.description}
+                    helperText={errors.description?.message} */
+                />
+            </div>
 
-}
-export default FestivalCreate;
+            <div className='form-group'>
+                <TextField 
+                    label="Points" 
+                    name="points" 
+                    variant="filled" 
+                    onChange={handleForm}
+                    /* error={errors.points}
+                    helperText={errors.points?.message} */
+                />
+            </div>
+
+            <div className='form-group'>
+                <TextField 
+                    label="Level" 
+                    name="level" 
+                    variant="filled" 
+                    onChange={handleForm}
+                    /* error={errors.level}
+                    helperText={errors.level?.message} */
+                />
+            </div>
+
+            <Button variant='contained' onClick={submitForm}>Submit</Button>
+        </Grid>
+    );
+};
+
+export default Create;
