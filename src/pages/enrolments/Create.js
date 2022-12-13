@@ -17,15 +17,8 @@ const Create = () => {
     
     const [courses, setCourses] = useState();
     const [lecturers, setLecturers] = useState();
-const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-      setAnchorEl(false);
-    };
-   
+
+ 
     useEffect(() => {
 
         /* Courses */
@@ -125,12 +118,7 @@ const [anchorEl, setAnchorEl] = useState(null);
                 <FormControl fullWidth>
                 <InputLabel sx={{color: theme.palette.typography.blue}}>Course</InputLabel>
                     <Select  
-                        aria-label="more"
-                        id="long-button"
-                        aria-controls={open ? 'long-menu' : undefined}
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-haspopup="true"
-                      
+             
                        
                         sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
                         name="course_id"
@@ -138,19 +126,7 @@ const [anchorEl, setAnchorEl] = useState(null);
                         >
 
                     <Menu
-                        id="long-menu"
-                        MenuListProps={{
-                        'aria-labelledby': 'long-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        
-                        PaperProps={{
-                        style: {
-                            maxHeight: 48 * 4.5,
-                            width: '20ch',
-                        },
-                        }}
+                     
                     >
                     {coursesList} 
                   </Menu>
