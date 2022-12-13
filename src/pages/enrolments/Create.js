@@ -81,7 +81,7 @@ const Create = () => {
         /* Courses */
         const coursesList = courses?.map(course => {
             return (    
-                <MenuItem onClick={handleClose} Paper key={course?.id} value={course?.id}>{course?.title}</MenuItem>     
+                <MenuItem Paper key={course?.id} value={course?.id}>{course?.title}</MenuItem>     
             )
         }) 
 
