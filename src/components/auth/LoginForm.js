@@ -34,10 +34,9 @@ const LoginForm = (props) => {
     const handleForm = (e) => {
         setForm((prevState) => ({
             ...prevState,
-        [e.target.name]: e.target.value
+            [e.target.name]: e.target.value
         }));
-        console.log(e.target.value)
-    }
+    };
 
 
     const handleClick = () => {
@@ -60,9 +59,6 @@ const LoginForm = (props) => {
     }
 
 
-    if (props.authenticated){
-        return <><h3>You are authenticated</h3></>
-    }else {
         
     
        
@@ -110,8 +106,8 @@ const LoginForm = (props) => {
                     
                         {/* Email */}
 
-                        {/* <Grid item lg={12} md={12} sm={12} xs={12} >
-                            <CustomTextField 
+                         <Grid item lg={12} md={12} sm={12} xs={12} >
+                            <TextField 
                                 inputProps={{
                                     style: {color: 'white', } 
                                     }}
@@ -125,12 +121,12 @@ const LoginForm = (props) => {
                              
                                
                                 />
-                        </Grid> */}
+                        </Grid> 
 
                         {/* Password */}
-{/* 
+ 
                         <Grid sx={{mt:5}} item lg={12} md={12} sm={12} xs={12} >
-                            <CustomTextField 
+                            <TextField 
                                 inputProps={{
                                     style: {color: 'white',} 
                                 }}
@@ -142,17 +138,12 @@ const LoginForm = (props) => {
                                 onChange={handleForm}
                                 sx={{backgroundColor: theme.palette.background.secondary, borderRadius: '12px'}}
                                 />
-                        </Grid> */}
+                        </Grid> 
                         
                         <Button fullWidth sx={{ mt:4, pb:3, pt:3, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px', backgroundColor: theme.palette.background.blue }} onClick={handleClick}>Sign in</Button>
                         <Button fullWidth sx={{ mt:4, pb:3, pt:3, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px'  }}  component={Link} to='/register' >Register</Button>
 
-                        <p style={errorStyle}>{errorMessage}</p>
-                         
-            Email: <input type='text' name='email' onChange={handleForm}/>
-            Password: <input type='text' name='password' onChange={handleForm}/>
-            <button onClick={handleClick}>Submit</button>
-            <p style={errorStyle}>{errorMessage}</p>
+       
                             
 
                   
@@ -166,7 +157,7 @@ const LoginForm = (props) => {
     </Grid>
         </>
     );
-}
+
 
 }
 

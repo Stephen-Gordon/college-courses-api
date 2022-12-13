@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../../config/api';
+
+
+import PageNotFound from '../PageNotFound';
+
+//mui
+import { ThemeProvider, Typography, Box, MenuItem, Select } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
-import PageNotFound from '../PageNotFound';
+
+import theme from '../../theme'
+
+
 
 const Edit = (props) => {
     const navigate = useNavigate();
@@ -54,8 +59,7 @@ const Edit = (props) => {
             }
         })
             .then((response) => {
-                console.log(response.data);
-                navigate('/courses');
+                navigate('/');
             })
             .catch((err) => {
                 console.error(err);
@@ -65,75 +69,122 @@ const Edit = (props) => {
 
     console.log(form)
     return (
-        <Grid item xs={8}>
-            <h2>Edit Course</h2>
+        <ThemeProvider theme={theme}>
 
-            <div className='form-group'>
+            <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                >
+               <Grid  maxWidth="sm"  container sx={{pl:5, pr:5, pt:5, display: 'flex', flexWrap: 'wrap'}}>
+
+               <Box sx={{pl:5, pr:5, pt:5, mb:5,  gridArea: 'header' }}>
+                    <Typography color="customCard.white" gutterBottom variant="h3" component="div">
+                        Edit a new course
+                    </Typography>
+                </Box>
+
+    
                 <TextField 
+                    inputProps={{
+                        style: {color: theme.palette.typography.primary} 
+                    }}
+                    InputLabelProps={{
+                        style: { color: theme.palette.typography.blue},
+                    }}
+                    fullWidth
                     value={form.title}
                     label="Title" 
                     name="title" 
-                    variant="filled" 
                     onChange={handleForm}
+                    sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
                    /*  error={errors.title}
                     helperText={errors.title?.message} */
                 />
-            </div>
+            
 
 
-            <div className='form-group'>
+            
                 <TextField 
+                    inputProps={{
+                        style: {color: theme.palette.typography.primary} 
+                    }}
+                    InputLabelProps={{
+                        style: { color: theme.palette.typography.blue},
+                    }}
+                    fullWidth
                     value={form.code}
                     label="Code" 
                     name="code" 
-                    variant="filled" 
                     onChange={handleForm}
+                    sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
                    /*  error={errors.code}
                     helperText={errors.code?.message} */
                 />
-            </div>
-            <div className='form-group'>
-                <TextField 
+          
+           
+                <TextField fullWidth
+                    inputProps={{
+                        style: {color: theme.palette.typography.primary} 
+                    }}
+                    InputLabelProps={{
+                        style: { color: theme.palette.typography.blue},
+                    }}
                     value={form.description}
                     multiline 
                     label="Description" 
                     name="description" 
-                    variant="filled" 
                     onChange={handleForm} 
+                    sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
                     /* error={errors.description}
                     helperText={errors.description?.message} */
                 />
-            </div>
-
-            <div className='form-group'>
-                <TextField 
+         
+                <TextField fullWidth
+                    inputProps={{
+                        style: {color: theme.palette.typography.primary} 
+                    }}
+                    InputLabelProps={{
+                        style: { color: theme.palette.typography.blue},
+                    }}
                     value={form.points}  
                     label="Points" 
                     name="points" 
-                    variant="filled" 
                     onChange={handleForm}
+                    sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
                     /* error={errors.points}
                     helperText={errors.points?.message} */
                 />
-            </div>
-
-            <div className='form-group'>
-                <TextField 
-                    value={form.level}
-                    label="Level" 
-                    name="level" 
-                    variant="filled" 
+            
+          
+               
+           
+   
+                <Select
+                    sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
+                    defaultValue={form.level}
+                    name="level"
+                    label="Level"
                     onChange={handleForm}
-                    /* error={errors.level}
-                    helperText={errors.level?.message} */
-                />
-            </div>
-           
+                    >
+
+                    <MenuItem sx={{backgroundColor: theme.palette.background.primary}} value={7}>7</MenuItem>
+                    <MenuItem sx={{backgroundColor: theme.palette.background.primary}} value={8}>8</MenuItem>
+                    <MenuItem sx={{backgroundColor: theme.palette.background.primary}} value={9}>9</MenuItem>
+                    <MenuItem sx={{backgroundColor: theme.palette.background.primary, ":hover":theme.palette.background.primary }} value={10}>10</MenuItem>
+                </Select>
 
            
 
-            <Button variant='contained' onClick={submitForm}>Submit</Button>
+                <Box sx={{ display: 'flex',  justifyContent: 'flex-end', width: '100%'}}>
+                    <Button sx={{mr:5, mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px' , width: '50%' }} >Cancel</Button>
+                    <Button sx={{ mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px', backgroundColor: theme.palette.background.blue, width: '50%'}} onClick={submitForm}>Create</Button>
+                </Box>
+            </Grid>
         </Grid>
+    </ThemeProvider>    
     );
 };
 

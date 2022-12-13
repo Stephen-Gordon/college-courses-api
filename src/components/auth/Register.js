@@ -128,7 +128,7 @@ const Register = (props) => {
                         {/* Name */}
 
                         <Grid item lg={12} md={12} sm={12} xs={12} >
-                            <CustomTextField 
+                            <TextField 
                                 inputProps={{
                                     style: {color: 'white', } 
                                     }}
@@ -147,7 +147,7 @@ const Register = (props) => {
                         {/* Email */}
 
                         <Grid sx={{mt:5}}  item lg={12} md={12} sm={12} xs={12} >
-                            <CustomTextField 
+                            <TextField 
                                 inputProps={{
                                     style: {color: 'white', } 
                                     }}
@@ -166,7 +166,7 @@ const Register = (props) => {
                         {/* Password */}
 
                         <Grid sx={{mt:5}} item lg={12} md={12} sm={12} xs={12} >
-                            <CustomTextField 
+                            <TextField 
                                 inputProps={{
                                     style: {color: 'white',} 
                                 }}
@@ -175,6 +175,7 @@ const Register = (props) => {
                                 label="Password" 
                                 name='password'
                                 type="text"
+                                onChange={handleForm}
                                 sx={{backgroundColor: theme.palette.background.secondary, borderRadius: '12px'}}
                                 />
                         </Grid>

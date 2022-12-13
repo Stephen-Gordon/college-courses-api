@@ -9,7 +9,8 @@ const customtheme = createTheme({
         background: {
           default:'#1e2024',  //primary background
           primary:'#1e2024',
-          secondary: '#232529',   //secondary background color
+          secondary: '#232529',
+          form: '#31343A',   //secondary background color
           white: "#f7f7f7",   //white
           light: "#edeff4",
           blue: '#1892ed',
@@ -24,16 +25,13 @@ const customtheme = createTheme({
             blue: "#4d61f7",
           },
         typography: {
-          allVariants: {
-            fontFamily: "'Montserrat', sans-serif",
-            textTransform: "none",
-          },
-          main: '#EEEFF1',
+          primary: '#EEEFF1',
           white: "#EEEFF1",
-          blue: '#1892ed',
+          secondary: '#bfc0c2',
+          blue: '#f0556b',
           lightBlue: '#38a9ff',
-          red: 'f52a59',
-          darkRed: 'f52a59'
+          red: '#f52a59',
+          darkRed: '#f52a59'
          
       
         }

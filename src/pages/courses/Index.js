@@ -6,18 +6,33 @@ import axios from '../../config/api'
 
 //Router
 import { useNavigate, Link } from 'react-router-dom';
+
+//components
 import StripedDataGrid from '../../components/StripedDataGrid';
 
 //mui
 import { Box, ThemeProvider } from '@mui/system';
-import {Button} from '@mui/material';
+import {Button, Typography, Grid, Container} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import theme from '../../theme'
+import Create from './Create';
+import DeleteBtn from '../../components/DeleteBtn';
+
+
 const Index = ( props) => {
+
+
     const navigate = useNavigate();
     let token = localStorage.getItem('token')
 
     const [courses, setCourses] = useState(null);
+
+
+    const linkStyle = {
+        textDecoration: "none",
+        color: '#1892ed'
+      };
 
     useEffect(() => {
         axios.get('/courses/', {
@@ -26,7 +41,7 @@ const Index = ( props) => {
             }
         })
         .then((response) => {
-            setCourses(response.data)
+            setCourses(response.data.data)
         })
         .catch((err) => {
             console.error(err)
@@ -35,14 +50,40 @@ const Index = ( props) => {
 
     
    
+    //Modal
+    const [addButton, setAddButton] = useState(false);
     
+
+
+    const deleteCallback = (id) => {
    
-   
+        console.log(courses)
+        let updatedCourses = courses.filter(course => {
+           return course.id !== id;
+        });
+
+        setCourses(updatedCourses); 
+           
+   }; 
       
     const columns = [
-        { field: 'id', headerName: 'ID', flex: 1, },
-        { field: 'courseTitle', headerName: 'Title',  flex: 1},
+        { field: 'id', headerName: 'ID', flex: 1, hide: true},
+
+        { field: 'courseTitle', headerName: 'Course Name',  flex: 1,
+        renderCell: (params) => {
+            return  <Link  
+            style={linkStyle}
+
+           component={Link}
+           to={`/courses/${params.row.id}`}
+          
+         >
+            {params.row.courseTitle}
+         </Link>
+
+        }},
         { field: 'code', headerName: 'code',  flex: 1},
+        { field: 'level', headerName: 'Level',  flex: 1},
         { 
             field: '', 
             headerName: '', 
@@ -51,7 +92,6 @@ const Index = ( props) => {
             renderCell: (params) => {
                 return  <Button 
                 startIcon={<EditIcon />} 
-               variant='contained'
                component={Link}
                to={`/courses/${params.row.id}/edit`}
               
@@ -61,61 +101,93 @@ const Index = ( props) => {
 
             }
         },
+        { 
+            field: '1', 
+            headerName: '1', 
+            flex: 1,
+            sortable: false,
+            renderCell: (params) => {
+                return  <DeleteBtn 
+                 startIcon={<DeleteIcon />} 
+                id={params.row.id} 
+                resource="courses"
+                deleteCallback={deleteCallback}
+            />
+
+            }
+        }
+        
       ];
 
 
     let rows = [];
 
     if (courses){
-        for (let i = 0; i < courses.data?.length; i++) {
+        for (let i = 0; i < courses?.length; i++) {
             rows.push( { 
-                id: courses.data[i]?.id,
-                courseTitle: courses.data[i]?.title,
-                code: courses.data[i]?.code})      
+                id: courses[i]?.id,
+                courseTitle: courses[i]?.title,
+                level: courses[i]?.level,
+                code: courses[i]?.code})      
        }
     }
     
-    const rowClick = (data) => {
-        console.log("Hi")
-        console.log(data.id)
-        navigate(`/courses/${data.id}`)
+    let html = (
+        <>
+            <Button sx={{p:1, color: 'typography.white', border: 'none', borderRadius: '12px', background: `linear-gradient(45deg, #1892ed, #f52a59)` }}  onClick={() => {setAddButton(true)}}>
+                Add a course
+            </Button>
+        </>
+    )
+
+    if(addButton === true){
+
+        html = (
+            <>
+                <Create/>
+            </>
+        )
+
     }
 
+  
 
-
-    if(!courses) return <h3>There are no courses</h3>
+    if(!courses) return <h3>Loading</h3>
 
     return (
         <>
         <ThemeProvider theme={theme}>
+
+   
+        <Container maxWidth="xl">
+            {html}
+            
+
             <Box sx={{ height: 400, width: '100%' }}>
-                <StripedDataGrid
-                     getRowClassName={(params) =>
-                        params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
-                      }
                 
-                    onRowClick={rowClick}
+                <StripedDataGrid
+                    getRowClassName={(params) =>
+                        params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
+                    }
                     rows={rows}
                     columns={columns}
                     pageSize={5}
                     rowsPerPageOptions={[5]}
-                    checkboxSelection
+                    
                     disableSelectionOnClick
-                    //onSelectionModelChange={handleChange}
                     experimentalFeatures={{ newEditingApi: true }}
                     sx={{
                         mt:5, 
                         color: theme.palette.typography.light,
-                        ml: '15%',
-                        border: 0,
+                        border: 2,
+                        borderRadius: '12px',
                         borderColor: theme.palette.background.border,
                       }}
-                      
-                    
                 />
             </Box>
-            
-            </ThemeProvider>
+        </Container>
+
+        </ThemeProvider>
         </>
     )
  

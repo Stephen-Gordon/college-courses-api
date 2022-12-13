@@ -24,10 +24,10 @@ import LecturersShow from './pages/lecturers/Show';
 import LecturersCreate from './pages/lecturers/Create';
 import LecturersEdit from './pages/lecturers/Edit';
  
-import EnrolementsIndex from './pages/enrolements/Index';
-import EnrolementsShow from './pages/enrolements/Show';
-import EnrolementsCreate from './pages/enrolements/Create';
-import EnrolementsEdit from './pages/enrolements/Edit';
+import EnrolmentsIndex from './pages/enrolments/Index';
+import EnrolmentsShow from './pages/enrolments/Show';
+import EnrolmentsCreate from './pages/enrolments/Create';
+import EnrolmentsEdit from './pages/enrolments/Edit';
  
 
 import PageNotFound from './pages/PageNotFound';
@@ -93,9 +93,9 @@ if(authenticated){
       <Route path='/lecturers/:id/edit' element={<LecturersEdit/>}/>
       <Route path='/lecturers/:id' element={<LecturersShow/>}/>
 
-      <Route path='/enrolements/create' element={<EnrolementsCreate/>}/>
-      <Route path='/enrolements/:id/edit' element={<EnrolementsEdit/>}/>
-      <Route path='/enrolements/:id' element={<EnrolementsShow/>}/>
+      <Route path='/enrolments/create' element={<EnrolmentsCreate/>}/>
+      <Route path='/enrolments/:id/edit' element={<EnrolmentsEdit/>}/>
+      <Route path='/enrolments/:id' element={<EnrolmentsShow/>}/>
        
     </>
   )
@@ -105,7 +105,7 @@ if(authenticated){
     <ThemeProvider theme={customtheme}>
     <CssBaseline>
     <Router>
-      <Navbar authenticated={authenticated}/>
+     {/*  <Navbar authenticated={authenticated}/> */}
         <Grid>
           <Routes>
 
@@ -127,9 +127,9 @@ if(authenticated){
             <Route path='/lecturers' element={<LecturersIndex authenticated={authenticated}/>}/>
             <Route path='/lecturers:id' element={<LecturersShow/>}/>
 
-            {/* ENROLEMENTS */}
-            <Route path='/enrolements' element={<EnrolementsIndex authenticated={authenticated}/>}/>
-            <Route path='/enrolements:id' element={<LecturersShow/>}/>
+            {/* ENROLMENTS */}
+            <Route path='/enrolments' element={<EnrolmentsIndex authenticated={authenticated}/>}/>
+            <Route path='/enrolments:id' element={<EnrolmentsShow/>}/>
 
             {/* PROTECTED */}
             {protectedRoutes}

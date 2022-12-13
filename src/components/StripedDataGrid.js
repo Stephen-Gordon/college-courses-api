@@ -6,6 +6,20 @@ const ODD_OPACITY = 0.2;
 
 
 const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
+    
+    '& .MuiDataGrid-iconSeparator': {
+        display: 'none',
+      },
+    "& .MuiDataGrid-columnHeaders": {
+        
+        color: theme.palette.typography.secondary,
+        borderTop: `0px solid ${theme.palette.background.border}`,
+        borderBottom: `1px solid ${theme.palette.background.border}`,
+        fontSize: 16
+      },
+      [`& .${gridClasses.footerContainer}`]: {
+        border: 0
+      },  
     [`& .${gridClasses.row}`]: {
     '& .MuiDataGrid-columnsContainer, .MuiDataGrid-columnHeaders, .MuiDataGrid-cell, .MuiDataGrid-cell:focus-within': {
     outline: 'none',
@@ -13,8 +27,8 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
     borderTop: `0px solid ${theme.palette.background.border}`,
     borderBottom: `0px solid ${theme.palette.background.border}`,
     },
-    borderRadius: '6px',
-    marginBottom: 8,
+    borderRadius: '0px',
+    marginBottom: 0,
     color: theme.palette.typography.white,
     '&:hover, &.Mui-hovered': {
         backgroundColor: alpha(theme.palette.background.border, ODD_OPACITY),

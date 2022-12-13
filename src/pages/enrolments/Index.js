@@ -17,6 +17,7 @@ import {Button, Typography, Grid, Container} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import theme from '../../theme'
 import AddIcon from '@mui/icons-material/Add';
+import { ConstructionOutlined } from '@mui/icons-material';
 
 const linkStyle = {
     textDecoration: "none",
@@ -27,16 +28,16 @@ const Index = ( props) => {
     const navigate = useNavigate();
     let token = localStorage.getItem('token')
 
-    const [lecturers, setLecturers] = useState(null);
+    const [enrolments, setEnrolments] = useState(null);
 
     useEffect(() => {
-        axios.get('/lecturers', {
+        axios.get('/enrolments', {
             headers:{
                 "Authorization": `Bearer ${token}`
             }
         })
         .then((response) => {
-            setLecturers(response.data)
+            setEnrolments(response.data.data)
         })
         .catch((err) => {
             console.error(err)
@@ -47,74 +48,45 @@ const Index = ( props) => {
  
       const columns = [
         { field: 'id', headerName: 'ID', flex: 1, hide: true},
-        { field: 'name', headerName: 'Lecturer Name',  flex: 1,
-        renderCell: (params) => {
-            return  <Link  
-            style={linkStyle}
-
-           component={Link}
-           to={`/lecturers/${params.row.id}`}
-          
-         >
-            {params.row.name}
-         </Link>
-
-        }},
-        { field: 'status', headerName: 'status',  flex: 1},
-        { field: 'address', headerName: 'address',  flex: 1},
-        { field: 'phone', headerName: 'phone',  flex: 1},
-        { 
-            field: '', 
-            headerName: '', 
-            flex: 1,
-            sortable: false,
-            renderCell: (params) => {
-                return   <Button 
-                    startIcon={<EditIcon />} 
-                    component={Link}
-                    to={`/lecturers/${params.row.id}/edit`}
-                >
-                Edit
-             </Button>
-
-            }
-        },
+        { field: 'course_id', headerName: 'Course',  flex: 1,},
+        { field: 'lecturer_id', headerName: 'Lecturer',  flex: 1},
+        { field: 'status', headerName: 'Status',  flex: 1},
       ];
 
 
     let rows = [];
 
-    if (lecturers){
-        for (let i = 0; i < lecturers.data?.length; i++) {
+    if (enrolments){
+        for (let i = 0; i < enrolments?.length; i++) {
             rows.push( { 
-                id: lecturers.data[i]?.id,
-                name: lecturers.data[i]?.name,
-                address: lecturers.data[i]?.address,
-                phone: lecturers.data[i]?.phone,
-                status: lecturers.data[i]?.enrolments[0]?.status})      
+                id: enrolments[i]?.id,
+                course_id: enrolments[i]?.course?.title,
+                lecturer_id: enrolments[i]?.lecturer?.name,
+                status: enrolments[i]?.status})      
        }
     }
     
 
 
+    const rowClick = (e) => {
+       navigate(`/enrolments/${e.id}`)
+    }
 
-
-    if(!lecturers) return <h3>There are no lecturers</h3>
+    if(!enrolments) return <h3>Loading</h3>
 
     return (
         <>
         <ThemeProvider theme={theme}>
+             <Container maxWidth="xl">
                 <Box sx={{pr:5, pt:5, mb:5,  gridArea: 'header', display: 'flex', flexDirection: 'row' }}>
-                                
-                
 
                     <Button 
                         startIcon={<AddIcon />} 
                         component={Link} 
-                        to={'/lecturers/create'}
+                        to={'/enrolments/create'}
                         sx={{p:1, color: 'typography.white', border: 'none', borderRadius: '12px', background: `linear-gradient(45deg, #1892ed, #f52a59)` }} 
                     >
-                        Add a Lecturer
+                        Add an enrolment
                     </Button>
                 </Box>
                 
@@ -127,7 +99,7 @@ const Index = ( props) => {
                     columns={columns}
                     pageSize={5}
                     rowsPerPageOptions={[5]}
-                    
+                    onRowClick={rowClick}
                     disableSelectionOnClick
                     experimentalFeatures={{ newEditingApi: true }}
                     sx={{
@@ -139,6 +111,7 @@ const Index = ( props) => {
                       }}
                 />
             </Box>
+            </Container>
         </ThemeProvider>
         </>
     )
