@@ -14,7 +14,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { Paper, ThemeProvider, Box, Typography } from '@mui/material';
 
 
-const Create = (props) => {
+const Create = ({setAddButton}) => {
+
     const navigate = useNavigate();
     const [form, setForm] = useState({});
     const [errors, setErrors] = useState({});
@@ -59,37 +60,38 @@ const Create = (props) => {
             })
             .then((response) => {
                 console.log(response.data);
-                navigate('/');
+                setAddButton(false)
             })
             .catch((err) => {
                 console.error(err);
                 console.log(err.response.data);
-                setErrors(err.response.data);
+                setErrors(err.response.data.errors);
             });
         }
 
         
     };
 
+   
     return (
         <>
           <ThemeProvider theme={theme}>
             
 
            
-            <Grid
-                
-                
-                >
-            
-                <Grid sx={{ mt:4, pb:3, borderBottom: '2px solid #494E58', borderRadius: '0px'}}>
-                
-                    <Grid  maxWidth="xl" container sx={{pl:3, pr:3, pt:3, display: 'flex', flexDirection: 'row',}}>
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ mt:4, borderBottom: '2px solid #494E58', borderRadius: '0px'}}
+            >
+            <Grid  maxWidth="xl"  container columns={12} sx={{display: 'flex', flexDirection: 'row',}}>  
 
-                    
                         {/* Title */}
 
-                         
+                         <Grid  sx={{ml:3, mb:3}} item lg={2} md={5} sm={5} xs={12}>
+                            <FormControl fullWidth>
                             <TextField 
                                 inputProps={{
                                     style: {color: theme.palette.typography.primary} 
@@ -103,13 +105,16 @@ const Create = (props) => {
                                 name='title'
                                 type="text"
                                 onChange={handleForm}
-                                sx={{mr:3, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
+                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
                                 />
-                        
-
+                             
+                            <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.title?.message}</FormHelperText>
+                         </FormControl>
+                        </Grid>
                         {/* Code */}
  
-                        
+                        <Grid  sx={{ml:3, mb:3}} item lg={2} md={5} sm={5} xs={12}>
+                            <FormControl fullWidth>
                             <TextField 
                                 inputProps={{
                                     style: {color: theme.palette.typography.primary} 
@@ -123,18 +128,23 @@ const Create = (props) => {
                                 name='code'
                                 type="text"
                                 onChange={handleForm}
-                               sx={{mr:3, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
+                               sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
                                 />
-                      
+                            <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.code?.message}</FormHelperText>
+                            </FormControl>
+                        </Grid>
+
+
 
                         {/* Description */}
 
-                        
+                        <Grid  sx={{ml:3, mb:3}} item lg={2} md={5} sm={5} xs={12}>
+                        <FormControl fullWidth>
                             <TextField 
                                inputProps={{
                                 style: {color: theme.palette.typography.primary} 
                                 }}
-                            InputLabelProps={{
+                                InputLabelProps={{
                                 style: { color: theme.palette.typography.blue},
                                 }}  
                                 id="description" 
@@ -142,52 +152,64 @@ const Create = (props) => {
                                 name='description'
                                 type="text"
                                 onChange={handleForm}
-                               sx={{mr:3, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
+                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
                                 />
-                       
+                                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.description?.message}</FormHelperText>
+                         </FormControl>
+                        </Grid>
+
+
 
                         {/* Points */}
 
-                       
-                            <TextField 
-                                inputProps={{
-                                    style: {color: theme.palette.typography.primary} 
-                                    }}
-                                InputLabelProps={{
-                                    style: { color: theme.palette.typography.blue},
-                                    }}  
-                                id="points" 
-                                label="Points" 
-                                name='points'
-                                type="text"
-                                onChange={handleForm}
-                               sx={{mr:3, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
-                                />
-                        
+                        <Grid  sx={{ml:3, mb:3}} item lg={1} md={5} sm={5} xs={12}>
+                        <FormControl fullWidth>
+                        <TextField 
+                            inputProps={{
+                                style: {color: theme.palette.typography.primary} 
+                                }}
+                            InputLabelProps={{
+                                style: { color: theme.palette.typography.blue},
+                                }}  
+                            id="points" 
+                            label="Points" 
+                            name='points'
+                            type="text"
+                            onChange={handleForm}
+                            sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
+                            />
+                            <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.points?.message}</FormHelperText>
+                        </FormControl>
+                        </Grid>
 
                         {/* Level */}
 
-                       
-                            <TextField 
-                                inputProps={{
-                                    style: {color: theme.palette.typography.primary} 
-                                    }}
-                                InputLabelProps={{
-                                    style: { color: theme.palette.typography.blue},
-                                    }}  
-                                id="level" 
-                                label="Level" 
-                                name='level'
-                                type="text"
+                        <Grid  sx={{ml:3, mb:3}} item lg={1} md={5} sm={5} xs={12}>
+                            <FormControl fullWidth>
+                            <Select
+                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
+                                defaultValue={form.level}
+                                name="level"
+                                label="Level"
                                 onChange={handleForm}
-                                sx={{mr:3, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
-                                />
-                       
-                            <Button startIcon={<AddIcon />} sx={{  color: 'typography.white', borderRadius: '12px',  background: `linear-gradient(45deg, #1892ed, #f52a59)`}} onClick={submitForm}></Button>
-                      
+                                >
+
+                                <MenuItem sx={{backgroundColor: theme.palette.background.primary}} value={7}>7</MenuItem>
+                                <MenuItem sx={{backgroundColor: theme.palette.background.primary}} value={8}>8</MenuItem>
+                                <MenuItem sx={{backgroundColor: theme.palette.background.primary}} value={9}>9</MenuItem>
+                                <MenuItem sx={{backgroundColor: theme.palette.background.primary, ":hover":theme.palette.background.primary }} value={10}>10</MenuItem>
+                            </Select>
+                                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.level?.message}</FormHelperText>
+                            </FormControl>
+
+                        </Grid>
+
+                            {/* Submit button */}
+                            <Grid sx={{ml:3, mb:3}}  item lg={1} md={5} sm={5} xs={12}>
+                                <Button fullWidth startIcon={<AddIcon />} sx={{ height:'100%' , color: 'typography.white', borderRadius: '12px',  background: `linear-gradient(45deg, #1892ed, #f52a59)`}} onClick={submitForm}></Button>
+                            </Grid>     
                     </Grid>
-                 
-                </Grid>
+             
         </Grid>
         
     </ThemeProvider>

@@ -3,17 +3,17 @@ import { useNavigate } from "react-router-dom";
 import axios from '../../config/api';
 
 //MUI
-import { Grid, TextField, Button, Paper, ThemeProvider, Box, Typography} from "@mui/material";
+import {FormControl, FormHelperText, Grid, TextField, Button, Paper, ThemeProvider, Box, Typography} from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
 
 //THEME
 import theme from '../../theme'
 
 
-const Create = () => {
+const Create = ({setAddButton}) => {
     const navigate = useNavigate();
-    const [form, setForm] = useState({
-    });
- 
+    const [form, setForm] = useState({});
+    const [errors, setErrors] = useState({});
 
     const handleForm = (e) => {
         setForm((prevState) => ({
@@ -22,52 +22,68 @@ const Create = () => {
         }));
     }
 
+    const isRequired = (fields) => {
+        let error = false;
+        setErrors({});
+
+        fields.forEach(field => {
+            if(!form[field]){
+                error = true;
+                setErrors((prevState) => ({
+                    ...prevState,
+                    [field]: {
+                        message: `${field} is required!!!!`
+                    }
+                }));
+            }
+        });
+
+
+        return error;
+    };
 
     const submitForm = () => {
-        let token = localStorage.getItem('token')
-        axios.post('/lecturers', form,
-        {
-            headers: {
-                "authorization": `Bearer ${token}`
-            }
-        })
-            .then((response) => {
-                console.log(response.data)
-                navigate('/')
-                
+
+
+        if(!isRequired(['name', 'address', 'email', 'phone'])){
+            let token = localStorage.getItem('token');
+
+            axios.post('/lecturers', form, {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
             })
-            .catch((err)=> {
-                console.error(err.response.data)
+            .then((response) => {
+                console.log(response.data);
+                setAddButton(false)
+            })
+            .catch((err) => {
+                console.error(err);
+                console.log(err.response.data);
+                setErrors(err.response.data.errors);
             });
-    }
+        }
+
+        
+    };
 
     return (
         <>
           <ThemeProvider theme={theme}>
 
-            <Grid
-                container
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-                >
-            
-                <Grid sx={{ mt:4, pb:5}}>
-                
-                    <Grid  maxWidth="sm"  container sx={{pl:5, pr:5, pt:5, display: 'flex', flexWrap: 'wrap'}}>
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ mt:4, borderBottom: '2px solid #494E58', borderRadius: '0px'}}
+            >
+            <Grid  maxWidth="xl"  container columns={12} sx={{display: 'flex', flexDirection: 'row',}}>  
 
-                        <Box sx={{pl:5, pr:5, pt:5, mb:5,  gridArea: 'header' }}>
-                            
-                            <Typography color="customCard.white" gutterBottom variant="h3" component="div">
-                                Add a new lecturers
-                            </Typography>
-                       
-                        </Box>
-                    
                         {/* Name */}
 
-                         <Grid item lg={12} md={12} sm={12} xs={12} >
+                         <Grid sx={{ml:3, mb:3}} item lg={2} md={5} sm={5} xs={12}>
+                         <FormControl fullWidth>
                             <TextField 
                                 inputProps={{
                                     style: {color: theme.palette.typography.primary} 
@@ -81,13 +97,16 @@ const Create = () => {
                                 name='name'
                                 type="text"
                                 onChange={handleForm}
-                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
+                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
                                 />
+                                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.name?.message}</FormHelperText>
+                            </FormControl>    
                         </Grid> 
 
                         {/* Address */}
  
-                        <Grid sx={{mt:5}} item lg={12} md={12} sm={12} xs={12} >
+                        <Grid sx={{ml:3, mb:3}} item lg={2} md={5} sm={5} xs={12}>
+                            <FormControl fullWidth>
                             <TextField 
                                 inputProps={{
                                     style: {color: theme.palette.typography.primary} 
@@ -101,13 +120,16 @@ const Create = () => {
                                 name='address'
                                 type="text"
                                 onChange={handleForm}
-                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
+                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
                                 />
+                                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.address?.message}</FormHelperText>
+                            </FormControl>
                         </Grid> 
 
                         {/* Email */}
 
-                        <Grid sx={{mt:5}} item lg={12} md={12} sm={12} xs={12} >
+                        <Grid sx={{ml:3, mb:3}} item lg={2} md={5} sm={5} xs={12}>
+                        <FormControl fullWidth>
                             <TextField 
                                 inputProps={{
                                     style: {color: theme.palette.typography.primary} 
@@ -121,13 +143,16 @@ const Create = () => {
                                 name='email'
                                 type="text"
                                 onChange={handleForm}
-                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
+                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
                                 />
+                                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.email?.message}</FormHelperText>
+                            </FormControl>
                         </Grid> 
 
                         {/* Phone */}
 
-                        <Grid sx={{mt:5}} item lg={12} md={12} sm={12} xs={12} >
+                        <Grid sx={{ml:3, mb:3}} item lg={2} md={5} sm={5} xs={12}>
+                        <FormControl fullWidth>
                             <TextField 
                                inputProps={{
                                     style: {color: theme.palette.typography.primary} 
@@ -141,19 +166,21 @@ const Create = () => {
                                 name='phone'
                                 type="text"
                                 onChange={handleForm}
-                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
+                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
                                 />
+                                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.phone?.message}</FormHelperText>
+                            </FormControl>
                         </Grid> 
 
 
-                       <Box sx={{ display: 'flex',  justifyContent: 'flex-end' }}>
-                            <Button sx={{mr:5, mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', borderRadius: '12px'  }} >Cancel</Button>
-                            <Button sx={{ mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px', backgroundColor: theme.palette.background.blue }} onClick={submitForm}>Create</Button>
-                       </Box>
+                       {/* Submit button */}
+                        <Grid sx={{ml:3, mb:3}}  item lg={2} md={5} sm={5} xs={12}>
+                            <Button fullWidth startIcon={<AddIcon />} sx={{ height:'100%' , color: 'typography.white', borderRadius: '12px',  background: `linear-gradient(45deg, #1892ed, #f52a59)`}} onClick={submitForm}></Button>
+                        </Grid>     
                     </Grid>
                   
                 </Grid>
-        </Grid>
+      
         
     </ThemeProvider>
         </>

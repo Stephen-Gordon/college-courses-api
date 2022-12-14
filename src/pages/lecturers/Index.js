@@ -9,7 +9,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 //Components
 import StripedDataGrid from '../../components/StripedDataGrid';
-
+import Create from './Create';
 
 //mui
 import { Box, ThemeProvider } from '@mui/system';
@@ -17,6 +17,8 @@ import {Button, Typography, Grid, Container} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import theme from '../../theme'
 import AddIcon from '@mui/icons-material/Add';
+import Delete from './Delete'
+
 
 const linkStyle = {
     textDecoration: "none",
@@ -78,7 +80,7 @@ const Index = ( props) => {
              </Button>
 
             }
-        },
+        }, 
       ];
 
 
@@ -94,9 +96,29 @@ const Index = ( props) => {
                 status: lecturers.data[i]?.enrolments[0]?.status})      
        }
     }
+
+    
+    //Modal
+    const [addButton, setAddButton] = useState(false);
     
 
+    let html = (
+        <>
+            <Button sx={{p:1, color: 'typography.white', border: 'none', borderRadius: '12px', background: `linear-gradient(45deg, #1892ed, #f52a59)` }}  onClick={() => {setAddButton(true)}}>
+                Add a lecturer
+            </Button>
+        </>
+    )
 
+    if(addButton === true){
+
+        html = (
+            <>
+                <Create setAddButton={setAddButton}/>
+            </>
+        )
+
+    }
 
 
     if(!lecturers) return <h3>There are no lecturers</h3>
@@ -104,20 +126,8 @@ const Index = ( props) => {
     return (
         <>
         <ThemeProvider theme={theme}>
-                <Box sx={{pr:5, pt:5, mb:5,  gridArea: 'header', display: 'flex', flexDirection: 'row' }}>
-                                
-                
-
-                    <Button 
-                        startIcon={<AddIcon />} 
-                        component={Link} 
-                        to={'/lecturers/create'}
-                        sx={{p:1, color: 'typography.white', border: 'none', borderRadius: '12px', background: `linear-gradient(45deg, #1892ed, #f52a59)` }} 
-                    >
-                        Add a Lecturer
-                    </Button>
-                </Box>
-                
+        <Container maxWidth="xl">
+                 {html}
                 <Box sx={{ height: 400, width: '100%' }}>
                 <StripedDataGrid
                       getRowClassName={(params) =>
@@ -139,6 +149,7 @@ const Index = ( props) => {
                       }}
                 />
             </Box>
+        </Container>    
         </ThemeProvider>
         </>
     )

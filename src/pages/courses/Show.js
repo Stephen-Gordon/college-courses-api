@@ -74,7 +74,7 @@ let token = localStorage.getItem('token');
             </Box>
                 
 
-                <Grid cointainer column={12}  sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                <Grid container column={12}  sx={{ display: 'flex', flexWrap: 'wrap' }}>
                             
                         <Grid sx={{pl:5, mt:3, mb:5, borderLeft: '2px solid #494E58'}} item lg={12} md={12} sm={12} xs={12} >
                         

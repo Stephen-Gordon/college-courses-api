@@ -1,6 +1,21 @@
 import { createTheme } from "@mui/material";
 
 const customtheme = createTheme({
+  typography: {
+    allVariants: {
+      fontFamily: [
+        'Inter',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+  },
     palette: {
         primary: {
             main: '#0971F1',
@@ -28,12 +43,10 @@ const customtheme = createTheme({
           primary: '#EEEFF1',
           white: "#EEEFF1",
           secondary: '#bfc0c2',
-          blue: '#f0556b',
+          blue: '#1892ed',
           lightBlue: '#38a9ff',
           red: '#f52a59',
           darkRed: '#f52a59'
-         
-      
         }
       },
       
@@ -41,6 +54,6 @@ const customtheme = createTheme({
     });
 
 /* https://coolors.co/1e2024 */
-
+/* pink f0556b */
 export default customtheme
 

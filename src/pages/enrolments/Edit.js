@@ -4,7 +4,7 @@ import axios from '../../config/api';
 
 
 //MUI
-import { Grid, TextField, ThemeProvider, Typography, Box, FormControl, Select, MenuItem, InputLabel, Button} from "@mui/material";
+import {FormHelperText, Grid, TextField, ThemeProvider, Typography, Box, FormControl, Select, MenuItem, InputLabel, Button} from "@mui/material";
 
 
 import theme from '../../theme'
@@ -23,6 +23,9 @@ const Create = () => {
 
     const [course, setCourse] = useState();
     const [lecturer, setLecturer] = useState();
+
+    const [errors, setErrors] = useState({});
+
 
     const [enrolments, setEnrolments] = useState([]);
 
@@ -79,29 +82,52 @@ const Create = () => {
             ...prevState,
         [e.target.name]: e.target.value
         }));
-        console.log(e.target.value)
     }
 
+    const isRequired = (fields) => {
+        let error = false;
+        setErrors({});
+
+        fields.forEach(field => {
+            if(!form[field]){
+                error = true;
+                setErrors((prevState) => ({
+                    ...prevState,
+                    [field]: {
+                        message: `${field} is required!!!!`
+                    }
+                }));
+            }
+        });
+
+
+        return error;
+    };
 
     const submitForm = () => {
 
-        let token = localStorage.getItem('token');
 
-        axios.put(`/enrolments/${id}`, form, {
+        if(!isRequired(['course_id', 'lecturer_id', 'status', 'time', 'date'])){
+            let token = localStorage.getItem('token');
+
+            axios.put(`/enrolments/${id}`, form, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
-        })
+            })
             .then((response) => {
-                console.log(response.data)
-                navigate('/');
+                navigate(`/enrolments/${id}`);
             })
             .catch((err) => {
                 console.error(err);
                 console.log(err.response.data);
+                setErrors(err.response.data.errors);
             });
+        }
     };
-    
+
+
+   
 
         /* Courses */
         const coursesList = courses?.map(course => {
@@ -116,12 +142,12 @@ const Create = () => {
                 <MenuItem key={lecturers?.id} value={lecturers?.id}>{lecturers?.name}</MenuItem>     
             )
         }) 
-        console.log(enrolments)
+       
 
 
          const courseHtml = enrolments?.map(enrolment => {
             return (
-                <FormControl>
+                <FormControl key={enrolments.id} fullWidth>
                     <Select 
                         fullWidth 
                         key={enrolment?.id} 
@@ -131,16 +157,16 @@ const Create = () => {
                         onChange={handleForm}
                     >
                         {coursesList}
-                    </Select>     
+                    </Select>  
+                    <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.course_id?.message}</FormHelperText>   
                 </FormControl>
             )
         })  
 
         const lecturerHtml = enrolments?.map(enrolment => {
             return (
-                <FormControl fullWidth sx={{mt:5}}>
+                <FormControl  key={enrolments.id}  fullWidth sx={{mt:5}}>
                     <Select 
-                         
                         key={enrolment?.id} 
                         defaultValue={enrolment?.lecturer?.id}
                         sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
@@ -149,13 +175,14 @@ const Create = () => {
                     >
                         {lecturersList}
                     </Select>     
+                    <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.lecturer_id?.message}</FormHelperText>
                 </FormControl>
             )
         })  
 
         const statusHtml = enrolments?.map(enrolment => {
             return (
-                <FormControl sx={{mt:5}}>
+                <FormControl  key={enrolments.id}  fullWidth sx={{mt:5}}>
                     <Select 
                         
                         key={enrolment?.id} 
@@ -169,12 +196,13 @@ const Create = () => {
                        <MenuItem value={"associate"}>Associate</MenuItem>   
                        <MenuItem value={"career_break"}>Career Break</MenuItem>
                     </Select>     
+                    <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.course_id?.message}</FormHelperText>
                 </FormControl>
             )
         })  
    
 
-
+console.log(form)
     return (
         <>
         <ThemeProvider theme={theme}>
@@ -190,7 +218,7 @@ const Create = () => {
 
                 <Box sx={{pl:5, pr:5, pt:5, mb:5,  gridArea: 'header' }}>
                     <Typography color="customCard.white" gutterBottom variant="h3" component="div">
-                        Create an enrolment
+                        Edit enrolment {id}
                     </Typography>
                 </Box>
 
@@ -198,7 +226,7 @@ const Create = () => {
 
                 {/* COURSE */}
 
-                <Box sx={{display: 'flex', flexDirection: 'column'}}>{courseHtml}     {lecturerHtml}   {statusHtml} 
+                <Box sx={{display: 'flex', flexDirection: 'column', width:'100%'}}>{courseHtml}     {lecturerHtml}   {statusHtml} 
                 
                 </Box>       
 
@@ -210,11 +238,9 @@ const Create = () => {
              
                 {/* STATUS */}
           
-              
-          
-
-                <TextField  
-                    fullWidth
+              <FormControl fullWidth>
+              <TextField  
+                    
                     sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
                     inputProps={{
                         style: {color: theme.palette.typography.primary} 
@@ -229,10 +255,14 @@ const Create = () => {
                     onChange={handleForm}
                     value={form?.date}
                 />
+                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.date?.message}</FormHelperText>
+              </FormControl>
+          
 
-                <TextField  
+            <FormControl fullWidth>
+            <TextField  
                     sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
-                    fullWidth
+                    
                     inputProps={{
                         style: {color: theme.palette.typography.primary} 
                     }}
@@ -246,12 +276,17 @@ const Create = () => {
                     onChange={handleForm}
                     value={form.time} 
                 />
+                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.time?.message}</FormHelperText>
+            </FormControl>   
+
+
+            {/* Submit button */}
+            <Button sx={{ mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px', backgroundColor: theme.palette.background.blue, width: '100%'}} onClick={submitForm}>Update</Button>
 
             </Grid>
         
         
-                {/* Submit button */}
-                <Button variant='outlined' onClick={submitForm}>Submit</Button>
+               
                 </Grid>  
             </ThemeProvider>        
         </>

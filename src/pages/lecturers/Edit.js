@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import PageNotFound from '../PageNotFound';
-import { ThemeProvider, Typography, Box, MenuItem, Select } from '@mui/material';
+import { FormControl, FormHelperText, ThemeProvider, Typography, Box, MenuItem, Select } from '@mui/material';
 import theme from '../../theme'
 
 
@@ -16,6 +16,9 @@ const Edit = (props) => {
     const { id } = useParams();
     const [lecture, setLecture] = useState(null);
 
+    const [errors, setErrors] = useState({});
+
+
     let token = localStorage.getItem('token');
     
     useEffect(() => {
@@ -25,7 +28,6 @@ const Edit = (props) => {
             }
         })
              .then((response) => {
-                console.log(response.data);
                 setLecture(response.data.data);
                 setForm(response.data.data);
              })
@@ -44,25 +46,62 @@ const Edit = (props) => {
         }));
     };
 
+    const isRequired = (fields) => {
+        let error = false;
+        setErrors({});
+
+        fields.forEach(field => {
+            if(!form[field]){
+                error = true;
+                setErrors((prevState) => ({
+                    ...prevState,
+                    [field]: {
+                        message: `${field} is required!!!!`
+                    }
+                }));
+            }
+        });
+
+
+        return error;
+    };
+
     const submitForm = () => {
 
-        let token = localStorage.getItem('token');
 
-        axios.put(`/lecturers/${id}`, form, {
+        if(!isRequired(['name', 'address', 'phone', 'email'])){
+            let token = localStorage.getItem('token');
+
+            axios.put(`/lecturers/${id}`, form, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
-        })
+            })
             .then((response) => {
                 navigate('/');
             })
             .catch((err) => {
                 console.error(err);
                 console.log(err.response.data);
+                setErrors(err.response.data.errors);
             });
+        }
     };
 
-    console.log(form)
+    let emailError;
+
+       if(errors.email){
+        emailError =  errors.email[0]
+       }
+
+    let phoneError;
+
+    if(errors.phone){
+        phoneError =  errors.phone[0]
+    }   
+
+       
+
     return (
         <ThemeProvider theme={theme}>
 
@@ -83,7 +122,7 @@ const Edit = (props) => {
                        
                 </Box>
 
-    
+                <FormControl fullWidth>
                 <TextField 
                     inputProps={{
                         style: {color: theme.palette.typography.primary} 
@@ -97,13 +136,13 @@ const Edit = (props) => {
                     name="name" 
                     onChange={handleForm}
                     sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
-                   /*  error={errors.title}
-                    helperText={errors.title?.message} */
                 />
+                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.name?.message}</FormHelperText>
+                </FormControl>
             
 
 
-            
+                <FormControl fullWidth>
                 <TextField 
                     inputProps={{
                         style: {color: theme.palette.typography.primary} 
@@ -117,12 +156,21 @@ const Edit = (props) => {
                     name="address" 
                     onChange={handleForm}
                     sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
-                   /*  error={errors.code}
-                    helperText={errors.code?.message} */
+                  
                 />
-          
+                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.address?.message}</FormHelperText>
+                </FormControl>
            
-                <TextField fullWidth
+
+
+
+
+
+
+
+
+                <FormControl fullWidth>
+                <TextField 
                     inputProps={{
                         style: {color: theme.palette.typography.primary} 
                     }}
@@ -135,11 +183,20 @@ const Edit = (props) => {
                     name="phone" 
                     onChange={handleForm} 
                     sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
-                    /* error={errors.description}
-                    helperText={errors.description?.message} */
+                    
                 />
-         
-                <TextField fullWidth
+                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.phone?.message}{phoneError}</FormHelperText>
+                </FormControl>    
+
+
+
+
+
+
+
+
+                <FormControl fullWidth>    
+                <TextField 
                     inputProps={{
                         style: {color: theme.palette.typography.primary} 
                     }}
@@ -151,24 +208,13 @@ const Edit = (props) => {
                     name="email" 
                     onChange={handleForm}
                     sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
-                    /* error={errors.points}
-                    helperText={errors.points?.message} */
+                 
                 />
-            
+                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.email?.message}{emailError}</FormHelperText>
+            </FormControl>    
           
               
              
-
-
-
-
-
-
-
-
-
-            
-           
 
            
 

@@ -6,8 +6,8 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 //MUI
-import customtheme from './theme'
-import { Grid, ThemeProvider, CssBaseline } from "@mui/material";
+import theme from './theme'
+import { Box, Grid, ThemeProvider, CssBaseline } from "@mui/material";
 
 
 //PAGES
@@ -39,20 +39,6 @@ import Navbar from './components/Navbar';
 import './assets/css/app.css'
 import LoginForm from './components/auth/LoginForm';
 import Register from './components/auth/Register';
-
-import { createTheme } from '@mui/material/styles'
-
-const theme = createTheme({
-  typography: {
-    fontFamily: [
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-  },
-});
 
 
 const App = () => {
@@ -102,37 +88,38 @@ if(authenticated){
 }
 
   return (
-    <ThemeProvider theme={customtheme}>
+    <ThemeProvider theme={theme}>
     <CssBaseline>
     <Router>
      {/*  <Navbar authenticated={authenticated}/> */}
         <Grid>
+         
           <Routes>
 
 
-            {/* HOME */}
-            <Route path='/' element={<Home authenticated={authenticated} onAuthenticated={onAuthenticated}/>}/>
+          {/* HOME */}
+          <Route path='/' element={<Home authenticated={authenticated} onAuthenticated={onAuthenticated}/>}/>
 
 
-            {/* AUTH */}
-            <Route path='/login' element={<LoginForm authenticated={authenticated} onAuthenticated={onAuthenticated}/>}/>
-            <Route path='/register' element={<Register authenticated={authenticated} onAuthenticated={onAuthenticated}/>}/>
+          {/* AUTH */}
+          <Route path='/login' element={<LoginForm authenticated={authenticated} onAuthenticated={onAuthenticated}/>}/>
+          <Route path='/register' element={<Register authenticated={authenticated} onAuthenticated={onAuthenticated}/>}/>
 
 
-            {/* COURSES */}
-            <Route path='/courses' element={<CoursesIndex authenticated={authenticated}/>}/>
-           
+          {/* COURSES */}
+          <Route path='/courses' element={<CoursesIndex authenticated={authenticated}/>}/>
 
-            {/* LECTURERS */}
-            <Route path='/lecturers' element={<LecturersIndex authenticated={authenticated}/>}/>
-            <Route path='/lecturers:id' element={<LecturersShow/>}/>
 
-            {/* ENROLMENTS */}
-            <Route path='/enrolments' element={<EnrolmentsIndex authenticated={authenticated}/>}/>
-            <Route path='/enrolments:id' element={<EnrolmentsShow/>}/>
+          {/* LECTURERS */}
+          <Route path='/lecturers' element={<LecturersIndex authenticated={authenticated}/>}/>
+          <Route path='/lecturers:id' element={<LecturersShow/>}/>
 
-            {/* PROTECTED */}
-            {protectedRoutes}
+          {/* ENROLMENTS */}
+          <Route path='/enrolments' element={<EnrolmentsIndex authenticated={authenticated}/>}/>
+          <Route path='/enrolments:id' element={<EnrolmentsShow/>}/>
+
+          {/* PROTECTED */}
+          {protectedRoutes}
 
           {/* <Route path='*' element={<PageNotFound/>}/> */}
 
@@ -141,6 +128,7 @@ if(authenticated){
 
 
           </Routes>
+      
         </Grid>
         
       </Router>

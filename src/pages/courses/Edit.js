@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from '../../config/api';
 
 
 import PageNotFound from '../PageNotFound';
 
 //mui
-import { ThemeProvider, Typography, Box, MenuItem, Select } from '@mui/material';
+import {FormHelperText, ThemeProvider, Typography, Box, MenuItem, Select, FormControl } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -21,6 +21,8 @@ const Edit = (props) => {
     const { id } = useParams();
     const [course, setCourse] = useState(null);
 
+    const [errors, setErrors] = useState({});
+
     let token = localStorage.getItem('token');
     
     useEffect(() => {
@@ -30,7 +32,6 @@ const Edit = (props) => {
             }
         })
              .then((response) => {
-                console.log(response.data);
                 setCourse(response.data.data);
                 setForm(response.data.data);
              })
@@ -49,25 +50,61 @@ const Edit = (props) => {
         }));
     };
 
+    const isRequired = (fields) => {
+        let error = false;
+        setErrors({});
+
+        fields.forEach(field => {
+            if(!form[field]){
+                error = true;
+                setErrors((prevState) => ({
+                    ...prevState,
+                    [field]: {
+                        message: `${field} is required!!!!`
+                    }
+                }));
+            }
+        });
+
+
+        return error;
+    };
+
+
+
+
     const submitForm = () => {
 
-        let token = localStorage.getItem('token');
+        if(!isRequired(['title', 'code', 'description', 'points', 'level'])){
+            let token = localStorage.getItem('token');
 
-        axios.put(`/courses/${id}`, form, {
+            axios.put(`/courses/${id}`, form, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
-        })
+            })
             .then((response) => {
-                navigate('/');
+                navigate(`/courses/${id}`);
             })
             .catch((err) => {
                 console.error(err);
                 console.log(err.response.data);
+                setErrors(err.response.data.errors);
             });
+        }
     };
 
-    console.log(form)
+        let pointsError;
+
+       if(errors.points){
+        pointsError =  errors.points[0]
+       }
+       if(errors.points){
+        pointsError =  errors.points[0]
+       }
+
+       
+
     return (
         <ThemeProvider theme={theme}>
 
@@ -81,12 +118,12 @@ const Edit = (props) => {
                <Grid  maxWidth="sm"  container sx={{pl:5, pr:5, pt:5, display: 'flex', flexWrap: 'wrap'}}>
 
                <Box sx={{pl:5, pr:5, pt:5, mb:5,  gridArea: 'header' }}>
-                    <Typography color="customCard.white" gutterBottom variant="h3" component="div">
-                        Edit a new course
+                    <Typography color={theme.palette.typography.blue} gutterBottom variant="h3" component="div">
+                        Edit course {course.id}
                     </Typography>
                 </Box>
 
-    
+                <FormControl fullWidth>
                 <TextField 
                     inputProps={{
                         style: {color: theme.palette.typography.primary} 
@@ -94,19 +131,19 @@ const Edit = (props) => {
                     InputLabelProps={{
                         style: { color: theme.palette.typography.blue},
                     }}
-                    fullWidth
+                
                     value={form.title}
                     label="Title" 
                     name="title" 
                     onChange={handleForm}
                     sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
-                   /*  error={errors.title}
-                    helperText={errors.title?.message} */
+                  
                 />
-            
+                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.title?.message}</FormHelperText>
+                </FormControl>
 
 
-            
+                <FormControl fullWidth>
                 <TextField 
                     inputProps={{
                         style: {color: theme.palette.typography.primary} 
@@ -114,18 +151,20 @@ const Edit = (props) => {
                     InputLabelProps={{
                         style: { color: theme.palette.typography.blue},
                     }}
-                    fullWidth
+                
                     value={form.code}
                     label="Code" 
                     name="code" 
                     onChange={handleForm}
                     sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
-                   /*  error={errors.code}
-                    helperText={errors.code?.message} */
+                  
                 />
-          
-           
-                <TextField fullWidth
+                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.code?.message}</FormHelperText>
+                </FormControl>
+
+
+                <FormControl fullWidth>
+                <TextField
                     inputProps={{
                         style: {color: theme.palette.typography.primary} 
                     }}
@@ -138,11 +177,13 @@ const Edit = (props) => {
                     name="description" 
                     onChange={handleForm} 
                     sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
-                    /* error={errors.description}
-                    helperText={errors.description?.message} */
+                   
                 />
-         
-                <TextField fullWidth
+                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.description?.message}</FormHelperText>
+                </FormControl>
+                                
+                <FormControl fullWidth>
+                <TextField
                     inputProps={{
                         style: {color: theme.palette.typography.primary} 
                     }}
@@ -154,14 +195,14 @@ const Edit = (props) => {
                     name="points" 
                     onChange={handleForm}
                     sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
-                    /* error={errors.points}
-                    helperText={errors.points?.message} */
+     
                 />
-            
+                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{pointsError}</FormHelperText>
+                </FormControl>
           
                
            
-   
+                <FormControl fullWidth>
                 <Select
                     sx={{mt:5, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
                     defaultValue={form.level}
@@ -175,12 +216,13 @@ const Edit = (props) => {
                     <MenuItem sx={{backgroundColor: theme.palette.background.primary}} value={9}>9</MenuItem>
                     <MenuItem sx={{backgroundColor: theme.palette.background.primary, ":hover":theme.palette.background.primary }} value={10}>10</MenuItem>
                 </Select>
-
+                <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.level?.message}</FormHelperText>
+                </FormControl>
            
 
                 <Box sx={{ display: 'flex',  justifyContent: 'flex-end', width: '100%'}}>
-                    <Button sx={{mr:5, mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px' , width: '50%' }} >Cancel</Button>
-                    <Button sx={{ mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px', backgroundColor: theme.palette.background.blue, width: '50%'}} onClick={submitForm}>Create</Button>
+                    <Button component={Link} to={'/'}  sx={{mr:5, mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px' , width: '50%' }} >Cancel</Button>
+                    <Button sx={{ mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px', backgroundColor: theme.palette.background.blue, width: '50%'}} onClick={submitForm}>Update</Button>
                 </Box>
             </Grid>
         </Grid>

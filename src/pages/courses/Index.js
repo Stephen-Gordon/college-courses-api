@@ -17,17 +17,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import theme from '../../theme'
 import Create from './Create';
-import DeleteBtn from '../../components/DeleteBtn';
+import Delete from './Delete';
 
 
-const Index = ( props) => {
+const Index = (props) => {
 
 
     const navigate = useNavigate();
     let token = localStorage.getItem('token')
 
     const [courses, setCourses] = useState(null);
-
+    const [enrolmentChecker, setEnrolmentChecker] = useState(null)
 
     const linkStyle = {
         textDecoration: "none",
@@ -56,16 +56,32 @@ const Index = ( props) => {
 
 
     const deleteCallback = (id) => {
-   
-        console.log(courses)
+        console.log("updated course list")
+        
         let updatedCourses = courses.filter(course => {
            return course.id !== id;
         });
 
-        setCourses(updatedCourses); 
+        setCourses(updatedCourses);  
+        console.log("Course " +`${id}`+ " deleted")
            
    }; 
       
+   
+        let checkerHtml;
+        
+        if(enrolmentChecker === true){
+        checkerHtml = (
+            <Box sx={{color: theme.palette.typography.darkRed, mt:4, pb:3, borderBottom: '2px solid #494E58', borderRadius: '0px'}}>
+                <Typography variant='h5'>
+                This course has enrolments. Are you sure you want to delete it?
+                Press delete again to delete this course and its enrolments
+                </Typography>
+            </Box>
+        )
+        }
+        
+   
     const columns = [
         { field: 'id', headerName: 'ID', flex: 1, hide: true},
 
@@ -103,11 +119,11 @@ const Index = ( props) => {
         },
         { 
             field: '1', 
-            headerName: '1', 
+            headerName: '  ', 
             flex: 1,
             sortable: false,
             renderCell: (params) => {
-                return  <DeleteBtn 
+                return  <Delete setEnrolmentChecker={setEnrolmentChecker}
                  startIcon={<DeleteIcon />} 
                 id={params.row.id} 
                 resource="courses"
@@ -132,6 +148,8 @@ const Index = ( props) => {
        }
     }
     
+    
+
     let html = (
         <>
             <Button sx={{p:1, color: 'typography.white', border: 'none', borderRadius: '12px', background: `linear-gradient(45deg, #1892ed, #f52a59)` }}  onClick={() => {setAddButton(true)}}>
@@ -139,17 +157,19 @@ const Index = ( props) => {
             </Button>
         </>
     )
+    
 
     if(addButton === true){
 
         html = (
             <>
-                <Create/>
+                <Create setAddButton={setAddButton}/>
             </>
         )
 
     }
 
+    
   
 
     if(!courses) return <h3>Loading</h3>
@@ -161,7 +181,7 @@ const Index = ( props) => {
    
         <Container maxWidth="xl">
             {html}
-            
+            {checkerHtml}
 
             <Box sx={{ height: 400, width: '100%' }}>
                 

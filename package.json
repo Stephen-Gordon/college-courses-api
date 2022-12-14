@@ -17,6 +17,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.0",
     "dayjs": "^1.11.7",
+    "framer-motion": "^7.9.1",
     "inter-ui": "^3.19.3",
     "moment": "^2.29.4",
     "react": "^18.2.0",
@@ -24,7 +25,6 @@
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
-    "typeface-roboto": "^1.1.13",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -9,7 +9,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 //Components
 import StripedDataGrid from '../../components/StripedDataGrid';
-
+import Create from './Create';
 
 //mui
 import { Box, ThemeProvider } from '@mui/system';
@@ -72,23 +72,36 @@ const Index = ( props) => {
        navigate(`/enrolments/${e.id}`)
     }
 
+    //Modal
+    const [addButton, setAddButton] = useState(false);
+    
+
+    let html = (
+        <>
+            <Button sx={{p:1, color: 'typography.white', border: 'none', borderRadius: '12px', background: `linear-gradient(45deg, #1892ed, #f52a59)` }}  onClick={() => {setAddButton(true)}}>
+                Add an enrolment
+            </Button>
+        </>
+    )
+
+    if(addButton === true){
+
+        html = (
+            <>
+                <Create setAddButton={setAddButton}/>
+            </>
+        )
+
+    }
+
     if(!enrolments) return <h3>Loading</h3>
 
     return (
         <>
         <ThemeProvider theme={theme}>
              <Container maxWidth="xl">
-                <Box sx={{pr:5, pt:5, mb:5,  gridArea: 'header', display: 'flex', flexDirection: 'row' }}>
 
-                    <Button 
-                        startIcon={<AddIcon />} 
-                        component={Link} 
-                        to={'/enrolments/create'}
-                        sx={{p:1, color: 'typography.white', border: 'none', borderRadius: '12px', background: `linear-gradient(45deg, #1892ed, #f52a59)` }} 
-                    >
-                        Add an enrolment
-                    </Button>
-                </Box>
+             {html}
                 
                 <Box sx={{ height: 400, width: '100%' }}>
                 <StripedDataGrid
