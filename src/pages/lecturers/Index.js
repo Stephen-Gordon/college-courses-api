@@ -18,7 +18,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import theme from '../../theme'
 import AddIcon from '@mui/icons-material/Add';
 import Delete from './Delete'
-
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const linkStyle = {
     textDecoration: "none",
@@ -31,6 +31,9 @@ const Index = ( props) => {
 
     const [lecturers, setLecturers] = useState(null);
 
+    const [enrolmentChecker, setEnrolmentChecker] = useState(null)
+    const [addButton, setAddButton] = useState(false);
+
     useEffect(() => {
         axios.get('/lecturers', {
             headers:{
@@ -38,7 +41,7 @@ const Index = ( props) => {
             }
         })
         .then((response) => {
-            setLecturers(response.data)
+            setLecturers(response.data.data)
         })
         .catch((err) => {
             console.error(err)
@@ -81,26 +84,64 @@ const Index = ( props) => {
 
             }
         }, 
+        { 
+            field: '1', 
+            headerName: '  ', 
+            flex: 1,
+            sortable: false,
+            renderCell: (params) => {
+                return  <Delete setEnrolmentChecker={setEnrolmentChecker}
+                 startIcon={<DeleteIcon />} 
+                id={params.row.id} 
+                resource="courses"
+                deleteCallback={deleteCallback}
+            />
+
+            }
+        }
       ];
 
 
     let rows = [];
 
     if (lecturers){
-        for (let i = 0; i < lecturers.data?.length; i++) {
+        for (let i = 0; i < lecturers?.length; i++) {
             rows.push( { 
-                id: lecturers.data[i]?.id,
-                name: lecturers.data[i]?.name,
-                address: lecturers.data[i]?.address,
-                phone: lecturers.data[i]?.phone,
-                status: lecturers.data[i]?.enrolments[0]?.status})      
+                id: lecturers[i]?.id,
+                name: lecturers[i]?.name,
+                address: lecturers[i]?.address,
+                phone: lecturers[i]?.phone,
+                status: lecturers[i]?.enrolments[0]?.status})      
        }
     }
 
     
-    //Modal
-    const [addButton, setAddButton] = useState(false);
-    
+
+
+    const deleteCallback = (id) => {
+        console.log("updating lecturer list")
+        let updatedLecturers = lecturers.filter(lecturer => {
+           return lecturer.id !== id;
+        });
+
+        setLecturers(updatedLecturers);  
+        console.log("Lecturer " +`${id}`+ " deleted")
+   }; 
+
+   let checkerHtml;
+        
+   if(enrolmentChecker === true){
+    checkerHtml = (
+        <Box sx={{color: theme.palette.typography.darkRed, mt:4, pb:3, borderBottom: '2px solid #494E58', borderRadius: '0px'}}>
+            <Typography variant='h5'>
+            This Lecturer has enrolments. Are you sure you want to delete it?
+            Press delete again to delete this lecturer and its enrolments
+            </Typography>
+        </Box>
+    )
+   }
+
+
 
     let html = (
         <>
@@ -127,7 +168,11 @@ const Index = ( props) => {
         <>
         <ThemeProvider theme={theme}>
         <Container maxWidth="xl">
-                 {html}
+
+                {html}
+                {checkerHtml}
+
+
                 <Box sx={{ height: 400, width: '100%' }}>
                 <StripedDataGrid
                       getRowClassName={(params) =>

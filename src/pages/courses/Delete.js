@@ -3,7 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from '../../config/api';
 import { useEffect, useState } from 'react';
 
-const CourseDeleteBtn = ({ id, deleteCallback, setEnrolmentChecker }) => {
+const Delete = ({ id, deleteCallback, setEnrolmentChecker }) => {
 
         const [enrolments, setEnrolments] = useState();
         const [course, setCourse] = useState(); 
@@ -131,4 +131,4 @@ const CourseDeleteBtn = ({ id, deleteCallback, setEnrolmentChecker }) => {
     );
 };
 
-export default CourseDeleteBtn;
+export default Delete;

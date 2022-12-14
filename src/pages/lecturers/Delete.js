@@ -3,10 +3,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from '../../config/api';
 import { useEffect, useState } from 'react';
 
-const CourseDeleteBtn = ({ id, deleteCallback, setEnrolmentChecker }) => {
+const Delete = ({ id, deleteCallback, setEnrolmentChecker }) => {
 
         const [enrolments, setEnrolments] = useState();
-        const [course, setCourse] = useState(); 
+        const [lecturer, setLecturer] = useState(); 
 
         const [count, setCount] = useState(1); 
         
@@ -26,13 +26,13 @@ const CourseDeleteBtn = ({ id, deleteCallback, setEnrolmentChecker }) => {
             });
 
 
-            axios.get(`/courses/${id}`, {
+            axios.get(`/lecturers/${id}`, {
                 headers:{
                     "Authorization": `Bearer ${token}`
                 }
             })
             .then((response) => {
-                setCourse(response.data.data)
+                setLecturer(response.data.data)
             })
             .catch((err) => {
                 console.error(err)
@@ -44,7 +44,7 @@ const CourseDeleteBtn = ({ id, deleteCallback, setEnrolmentChecker }) => {
 
        let enrolmentChecker;
       
-        if(course?.enrolments?.length >= 1){
+        if(lecturer?.enrolments?.length >= 1){
             enrolmentChecker = true
         }
 
@@ -61,7 +61,7 @@ const CourseDeleteBtn = ({ id, deleteCallback, setEnrolmentChecker }) => {
 
                     let deleteEnrolArray = enrolments.filter(enrolment => {
                         console.log("deleteEnrolArray")
-                        return enrolment.course.id === id;
+                        return enrolment.lecturer.id === id;
                     }); 
         
                     console.log(deleteEnrolArray)
@@ -74,9 +74,8 @@ const CourseDeleteBtn = ({ id, deleteCallback, setEnrolmentChecker }) => {
                         })
                         .then((response) => {
                             console.log(response)
-                            console.log("deleted enrolments, now deleting course")
+                            console.log("deleted enrolments, now deleting lecturer")
                             setEnrolmentChecker(false)
-                            
                         })
                         .catch((error) => {
                         console.log(error);
@@ -85,7 +84,7 @@ const CourseDeleteBtn = ({ id, deleteCallback, setEnrolmentChecker }) => {
                     onDelete();
                 }
             } else{
-            console.log("no enrolments, deleting course")
+            console.log("no enrolments, deleting lecturer")
             onDelete();
             }
 
@@ -98,14 +97,14 @@ const CourseDeleteBtn = ({ id, deleteCallback, setEnrolmentChecker }) => {
  
          let token = localStorage.getItem('token');
 
-         axios.delete(`/courses/${id}`, {
+         axios.delete(`/lecturers/${id}`, {
             headers:{
                 "Authorization": `Bearer ${token}`
             }
         })
          .then((response) => {
             console.log(response.data);
-            console.log("deleted course")
+            console.log("deleted lecturer")
             deleteCallback(id);
          })
          .catch((err) => {
@@ -131,4 +130,4 @@ const CourseDeleteBtn = ({ id, deleteCallback, setEnrolmentChecker }) => {
     );
 };
 
-export default CourseDeleteBtn;
+export default Delete;

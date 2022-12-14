@@ -19,6 +19,11 @@ import theme from '../../theme'
 import Create from './Create';
 import Delete from './Delete';
 
+const linkStyle = {
+    textDecoration: "none",
+    color: '#1892ed'
+};
+
 
 const Index = (props) => {
 
@@ -28,11 +33,8 @@ const Index = (props) => {
 
     const [courses, setCourses] = useState(null);
     const [enrolmentChecker, setEnrolmentChecker] = useState(null)
-
-    const linkStyle = {
-        textDecoration: "none",
-        color: '#1892ed'
-      };
+    const [addButton, setAddButton] = useState(false);
+    
 
     useEffect(() => {
         axios.get('/courses/', {
@@ -48,15 +50,9 @@ const Index = (props) => {
         });
     }, [token])
 
-    
-   
-    //Modal
-    const [addButton, setAddButton] = useState(false);
-    
-
 
     const deleteCallback = (id) => {
-        console.log("updated course list")
+        console.log("updating course list")
         
         let updatedCourses = courses.filter(course => {
            return course.id !== id;
@@ -71,14 +67,14 @@ const Index = (props) => {
         let checkerHtml;
         
         if(enrolmentChecker === true){
-        checkerHtml = (
-            <Box sx={{color: theme.palette.typography.darkRed, mt:4, pb:3, borderBottom: '2px solid #494E58', borderRadius: '0px'}}>
-                <Typography variant='h5'>
-                This course has enrolments. Are you sure you want to delete it?
-                Press delete again to delete this course and its enrolments
-                </Typography>
-            </Box>
-        )
+            checkerHtml = (
+                <Box sx={{color: theme.palette.typography.darkRed, mt:4, pb:3, borderBottom: '2px solid #494E58', borderRadius: '0px'}}>
+                    <Typography variant='h5'>
+                    This course has enrolments. Are you sure you want to delete it?
+                    Press delete again to delete this course and its enrolments
+                    </Typography>
+                </Box>
+            )
         }
         
    
@@ -180,6 +176,8 @@ const Index = (props) => {
 
    
         <Container maxWidth="xl">
+
+            
             {html}
             {checkerHtml}
 
