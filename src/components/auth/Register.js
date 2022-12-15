@@ -41,21 +41,21 @@ const Register = (props) => {
 
 
     const handleClick = () => {
-        console.log("clicked", form)
+        console.log(form)
         axios.post('/register', {
-            email: form.name,
+            name: form.name,
             email: form.email,
             password: form.password
         })
         .then((response) => {
-            console.log(response.data)
+            
             props.onAuthenticated(true, response.data.token)
-            navigate('/home')
+            navigate('/')
         })
         .catch((err) => {
             console.error(err)
-            console.log(err.response.error)
-            setErrorMessage(err.response.data.message)
+            console.log(err.response)
+           
         });
     }
 
@@ -65,7 +65,7 @@ const Register = (props) => {
         }, 3000)
         return () => {
             clearTimeout(timer)
-        }
+        } 
     }
    
     
@@ -76,38 +76,20 @@ const Register = (props) => {
 
         return(
         <>
-            <h3>You are already Logged in... Returning home</h3>
+          <ThemeProvider theme={theme}>
+          <Container maxWidth="xl">
+            <Typography sx={{color: theme.palette.typography.darkRed}}>
+                You are already Registered ... Returning home
+            </Typography>
+            </Container>
+          </ThemeProvider>
+           
         </>
         )
         
     }else {
         
 
-        
-        const CustomTextField = styled(TextField)(({ theme }) => ({
-            'label + &': {
-              marginTop: theme.spacing(10),
-              fontColor: theme.palette.typography.white,
-            },
-            '& .MuiFilledInput-input': {
-            borderRadius: 12,
-            position: 'relative',
-            backgroundColor: theme.palette.background.blue,
-            border: '1px solid #1892ed',
-            fontSize: 16,
-            fontColor: theme.palette.typography.white,
-            padding: '10px 26px 10px 12px',
-           
-            '&:hover': {
-                border: '1px solid #1892ed',
-                borderRadius: '12px',
-                backgroundColor: 'transparent'
-              },
-              '&:focus': {
-                backgroundColor: 'transparent'
-              },
-            },
-          }));
 
 
     return (
@@ -130,7 +112,10 @@ const Register = (props) => {
                         <Grid item lg={12} md={12} sm={12} xs={12} >
                             <TextField 
                                 inputProps={{
-                                    style: {color: 'white', } 
+                                    style: {color: theme.palette.typography.primary} 
+                                    }}
+                                InputLabelProps={{
+                                    style: { color: theme.palette.typography.blue},
                                     }}
                                 fullWidth  
                                 id="name" 
@@ -138,9 +123,7 @@ const Register = (props) => {
                                 name='name'
                                 type="text"
                                 onChange={handleForm}
-                                sx={{backgroundColor: theme.palette.background.secondary, borderRadius: '12px'}}
-                             
-                               
+                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
                                 />
                         </Grid>
 
@@ -149,7 +132,10 @@ const Register = (props) => {
                         <Grid sx={{mt:5}}  item lg={12} md={12} sm={12} xs={12} >
                             <TextField 
                                 inputProps={{
-                                    style: {color: 'white', } 
+                                    style: {color: theme.palette.typography.primary} 
+                                    }}
+                                InputLabelProps={{
+                                    style: { color: theme.palette.typography.blue},
                                     }}
                                 fullWidth  
                                 id="email" 
@@ -157,7 +143,7 @@ const Register = (props) => {
                                 name='email'
                                 type="text"
                                 onChange={handleForm}
-                                sx={{backgroundColor: theme.palette.background.secondary, borderRadius: '12px'}}
+                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
                              
                                
                                 />
@@ -168,15 +154,18 @@ const Register = (props) => {
                         <Grid sx={{mt:5}} item lg={12} md={12} sm={12} xs={12} >
                             <TextField 
                                 inputProps={{
-                                    style: {color: 'white',} 
-                                }}
+                                    style: {color: theme.palette.typography.primary} 
+                                    }}
+                                InputLabelProps={{
+                                    style: { color: theme.palette.typography.blue},
+                                    }}
                                 fullWidth  
                                 id="password" 
                                 label="Password" 
                                 name='password'
-                                type="text"
+                                type="password"
                                 onChange={handleForm}
-                                sx={{backgroundColor: theme.palette.background.secondary, borderRadius: '12px'}}
+                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
                                 />
                         </Grid>
                         

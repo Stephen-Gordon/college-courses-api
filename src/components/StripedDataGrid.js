@@ -2,11 +2,14 @@
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { alpha, styled } from '@mui/material/styles';
 
-const ODD_OPACITY = 0.2;
+const ODD_OPACITY = 0.008;
 
 
 const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
-    
+    backgroundColor: alpha(theme.palette.background.default, ODD_OPACITY),
+    '@media (hover: none)': {
+    backgroundColor: 'transparent'
+    },
     '& .MuiDataGrid-iconSeparator': {
         display: 'none',
       },
@@ -15,18 +18,22 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
         color: theme.palette.typography.secondary,
         borderTop: `0px solid ${theme.palette.background.border}`,
         borderBottom: `1px solid ${theme.palette.background.border}`,
-        fontSize: 16
+        fontSize: 14
       },
       [`& .${gridClasses.footerContainer}`]: {
-        border: 0
+        border: 0,
+        color: theme.palette.typography.white,
       },  
     [`& .${gridClasses.row}`]: {
     '& .MuiDataGrid-columnsContainer, .MuiDataGrid-columnHeaders, .MuiDataGrid-cell, .MuiDataGrid-cell:focus-within': {
     outline: 'none',
-    //border: 'none',
+   
+    fontSize: 16,
+    fontWeight: 500,
     borderTop: `0px solid ${theme.palette.background.border}`,
     borderBottom: `0px solid ${theme.palette.background.border}`,
     },
+    padding: '4px',
     borderRadius: '0px',
     marginBottom: 0,
     color: theme.palette.typography.white,

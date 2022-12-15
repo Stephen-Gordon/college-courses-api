@@ -8,6 +8,7 @@ import {FormHelperText, Grid, TextField, ThemeProvider, Typography, Box, FormCon
 
 
 import theme from '../../theme'
+import { NavigationSharp } from "@mui/icons-material";
 
 const Create = () => {
     const navigate = useNavigate();
@@ -28,6 +29,10 @@ const Create = () => {
 
 
     const [enrolments, setEnrolments] = useState([]);
+
+    const navHome = () => {
+        navigate('/')
+    }
 
     let token = localStorage.getItem('token')
     useEffect(() => {
@@ -132,14 +137,14 @@ const Create = () => {
         /* Courses */
         const coursesList = courses?.map(course => {
             return (
-                <MenuItem key={course?.id} value={course?.id}>{course?.title}</MenuItem>     
+                <MenuItem sx={{color: theme.palette.typography.white}} key={course?.id} value={course?.id}>{course?.title}</MenuItem>     
             )
         }) 
 
         /* Lecturers */
         const lecturersList = lecturers?.map(lecturers => {
             return (
-                <MenuItem key={lecturers?.id} value={lecturers?.id}>{lecturers?.name}</MenuItem>     
+                <MenuItem sx={{color: theme.palette.typography.white}} key={lecturers?.id} value={lecturers?.id}>{lecturers?.name}</MenuItem>     
             )
         }) 
        
@@ -191,10 +196,10 @@ const Create = () => {
                         name="status"
                         onChange={handleForm}
                     >
-                       <MenuItem value={"interested"}>Interested</MenuItem>     
-                       <MenuItem value={"assigned"}>Assigned</MenuItem>   
-                       <MenuItem value={"associate"}>Associate</MenuItem>   
-                       <MenuItem value={"career_break"}>Career Break</MenuItem>
+                       <MenuItem sx={{color: theme.palette.typography.white}} value={"interested"}>Interested</MenuItem>     
+                       <MenuItem sx={{color: theme.palette.typography.white}} value={"assigned"}>Assigned</MenuItem>   
+                       <MenuItem sx={{color: theme.palette.typography.white}} value={"associate"}>Associate</MenuItem>   
+                       <MenuItem sx={{color: theme.palette.typography.white}} value={"career_break"}>Career Break</MenuItem>
                     </Select>     
                     <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.course_id?.message}</FormHelperText>
                 </FormControl>
@@ -202,7 +207,7 @@ const Create = () => {
         })  
    
 
-console.log(form)
+
     return (
         <>
         <ThemeProvider theme={theme}>
@@ -213,11 +218,11 @@ console.log(form)
             alignItems="center"
             justifyContent="center"
             >
-            <Grid  maxWidth="sm"  container sx={{pl:5, pr:5, pt:5, display: 'flex', flexWrap: 'wrap'}}>  
+            <Grid  maxWidth="sm"  container sx={{ display: 'flex', flexWrap: 'wrap'}}>  
                 
 
-                <Box sx={{pl:5, pr:5, pt:5, mb:5,  gridArea: 'header' }}>
-                    <Typography color="customCard.white" gutterBottom variant="h3" component="div">
+                <Box sx={{pr:5, pt:5, mb:5,  gridArea: 'header' }}>
+                    <Typography color={theme.palette.typography.blue}  gutterBottom variant="h3" component="div">
                         Edit enrolment {id}
                     </Typography>
                 </Box>
@@ -281,8 +286,11 @@ console.log(form)
 
 
             {/* Submit button */}
-            <Button sx={{ mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px', backgroundColor: theme.palette.background.blue, width: '100%'}} onClick={submitForm}>Update</Button>
-
+            
+            <Box sx={{ display: 'flex',  justifyContent: 'flex-end', width: '100%'}}>
+                    <Button sx={{mr:5, mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px' , width: '50%' }} onClick={navHome} >Cancel</Button>
+                    <Button sx={{ mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px', backgroundColor: theme.palette.background.blue, width: '50%'}} onClick={submitForm}>Update</Button>
+                </Box>
             </Grid>
         
         

@@ -46,7 +46,9 @@ const App = () => {
 //Authentication
 const [authenticated, setAuthenticated] = useState(false)  
 
-let protectedRoutes;
+const [value, setValue] = useState(0)
+console.log(authenticated)
+
 
 
 useEffect(()=> {
@@ -59,17 +61,23 @@ useEffect(()=> {
 const onAuthenticated = (auth, token) => {
   setAuthenticated(auth);
   if(auth){
-    localStorage.setItem('token', token)
+      localStorage.setItem('token', token);
   }
-  else{
-    localStorage.removeItem('token')
+  else {
+      localStorage.removeItem('token');
   }
-};
+}
+if(authenticated === false){
 
-if(authenticated){
+}
+
+let navbar;
+
+let protectedRoutes;
+
+if(authenticated === true){
   protectedRoutes = (
     <>
-
       <Route path='/courses/create' element={<CoursesCreate/>}/>
       <Route path='/courses/:id/edit' element={<CoursesEdit/>}/>
       <Route path='/courses/:id' element={<CoursesShow/>}/>
@@ -79,26 +87,39 @@ if(authenticated){
       <Route path='/lecturers/:id/edit' element={<LecturersEdit/>}/>
       <Route path='/lecturers/:id' element={<LecturersShow/>}/>
 
+
+      <Route path='/enrolments' element={<EnrolmentsIndex authenticated={authenticated}/>}/>
       <Route path='/enrolments/create' element={<EnrolmentsCreate/>}/>
       <Route path='/enrolments/:id/edit' element={<EnrolmentsEdit/>}/>
       <Route path='/enrolments/:id' element={<EnrolmentsShow/>}/>
        
     </>
+    
   )
+  
 }
+  if(authenticated === true){
+
+    navbar = (
+      <Navbar value={value} setValue={setValue} authenticated={authenticated} onAuthenticated={onAuthenticated}/>
+    )
+    
+  }
+
+
 
   return (
     <ThemeProvider theme={theme}>
     <CssBaseline>
     <Router>
-     {/*  <Navbar authenticated={authenticated}/> */}
+        
         <Grid>
-         
+          {navbar}
           <Routes>
 
 
           {/* HOME */}
-          <Route path='/' element={<Home authenticated={authenticated} onAuthenticated={onAuthenticated}/>}/>
+          <Route path='/' element={<Home value={value} authenticated={authenticated} onAuthenticated={onAuthenticated}/>}/>
 
 
           {/* AUTH */}
@@ -112,19 +133,15 @@ if(authenticated){
 
           {/* LECTURERS */}
           <Route path='/lecturers' element={<LecturersIndex authenticated={authenticated}/>}/>
-          <Route path='/lecturers:id' element={<LecturersShow/>}/>
+   
 
           {/* ENROLMENTS */}
-          <Route path='/enrolments' element={<EnrolmentsIndex authenticated={authenticated}/>}/>
-          <Route path='/enrolments:id' element={<EnrolmentsShow/>}/>
+        
 
           {/* PROTECTED */}
           {protectedRoutes}
 
-          {/* <Route path='*' element={<PageNotFound/>}/> */}
-
-
-
+           <Route path='*' element={<PageNotFound/>}/>
 
 
           </Routes>

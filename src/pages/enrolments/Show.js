@@ -8,7 +8,7 @@ import { Button, Box, Typography, Container, ThemeProvider, Grid } from '@mui/ma
 
 //Components
 import StripedDataGrid from '../../components/StripedDataGrid';
-import AnimatedGradientText from '../../components/AnimatedGradientText'
+
 //THEME
 import theme from '../../theme'
 const Show = () => {
@@ -162,14 +162,6 @@ let token = localStorage.getItem('token');
                         </Grid> 
 
                         <Grid>
-                            
-                        <Button 
-                            startIcon={<EditIcon />} 
-                            component={Link}
-                            to={`/enrolments/${id}/edit`}
-                        >
-                         Edit
-                        </Button>
 
                         </Grid>                   
                             

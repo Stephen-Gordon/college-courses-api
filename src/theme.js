@@ -1,6 +1,32 @@
 import { createTheme } from "@mui/material";
 
 const customtheme = createTheme({
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#232529'
+        }
+      }
+    },
+    MuiListItemButton: {
+      defaultProps: {
+        disableTouchRipple: true,
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '16px',
+          paddingTop: '8px',
+          paddingBottom: '8px',
+          paddingLeft: '16px',
+          paddingRight: '16px',
+          fontWeight: '500'
+        }
+      }
+    }
+  },
   typography: {
     allVariants: {
       fontFamily: [
@@ -35,7 +61,7 @@ const customtheme = createTheme({
           border: '#494E58'
         },
         customCard: {
-            white: "#f7f7f7",
+            white: "#1e2024",
             light: "#b9b9c7",
             blue: "#4d61f7",
           },
@@ -46,7 +72,8 @@ const customtheme = createTheme({
           blue: '#1892ed',
           lightBlue: '#38a9ff',
           red: '#f52a59',
-          darkRed: '#f52a59'
+          darkRed: '#f52a59',
+          pink: '#f0556b'
         }
       },
       

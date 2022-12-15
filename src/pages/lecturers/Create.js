@@ -10,7 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import theme from '../../theme'
 
 
-const Create = ({setAddButton}) => {
+const Create = ({setAddButton, updateLecturers}) => {
     const navigate = useNavigate();
     const [form, setForm] = useState({});
     const [errors, setErrors] = useState({});
@@ -56,6 +56,7 @@ const Create = ({setAddButton}) => {
             .then((response) => {
                 console.log(response.data);
                 setAddButton(false)
+                updateLecturers()
             })
             .catch((err) => {
                 console.error(err);
@@ -175,7 +176,7 @@ const Create = ({setAddButton}) => {
 
                        {/* Submit button */}
                         <Grid sx={{ml:3, mb:3}}  item lg={2} md={5} sm={5} xs={12}>
-                            <Button fullWidth startIcon={<AddIcon />} sx={{ height:'100%' , color: 'typography.white', borderRadius: '12px',  background: `linear-gradient(45deg, #1892ed, #f52a59)`}} onClick={submitForm}></Button>
+                            <Button fullWidth startIcon={<AddIcon />} sx={{ height:'58px' , color: 'typography.white', borderRadius: '12px',  background: `linear-gradient(45deg, #1892ed, #f52a59)`}} onClick={submitForm}></Button>
                         </Grid>     
                     </Grid>
                   

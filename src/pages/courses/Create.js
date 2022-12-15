@@ -12,13 +12,28 @@ import FormHelperText from '@mui/material/FormHelperText';
 import theme from '../../theme'
 import AddIcon from '@mui/icons-material/Add';
 import { Paper, ThemeProvider, Box, Typography } from '@mui/material';
+import { styled, alpha } from '@mui/material/styles';
+//Components
+import StyledMenu from '../../components/StyledMenu';
 
-
-const Create = ({setAddButton}) => {
+const Create = ({setAddButton, updateCourses}) => {
 
     const navigate = useNavigate();
     const [form, setForm] = useState({});
     const [errors, setErrors] = useState({});
+
+    
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+
 
     const handleForm = (e) => {
         setForm((prevState) => ({
@@ -50,28 +65,29 @@ const Create = ({setAddButton}) => {
     const submitForm = () => {
 
 
-        if(!isRequired(['title', 'code', 'description', 'points', 'level'])){
-            let token = localStorage.getItem('token');
-
-            axios.post('/courses', form, {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            })
-            .then((response) => {
-                console.log(response.data);
-                setAddButton(false)
-            })
-            .catch((err) => {
-                console.error(err);
-                console.log(err.response.data);
-                setErrors(err.response.data.errors);
-            });
-        }
-
+       
+            if(!isRequired(['title', 'code', 'description', 'points', 'level'])){
+                let token = localStorage.getItem('token');
+    
+                axios.post('/courses', form, {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                })
+                .then((response) => {
+                    console.log(response.data);
+                    setAddButton(false)
+                    updateCourses()
+                })
+                .catch((err) => {
+                    console.error(err);
+                    console.log(err.response.data);
+                    setErrors(err.response.data.errors);
+                });
+            }
+  
+        };
         
-    };
-
    
     return (
         <>
@@ -187,17 +203,29 @@ const Create = ({setAddButton}) => {
                         <Grid  sx={{ml:3, mb:3}} item lg={1} md={5} sm={5} xs={12}>
                             <FormControl fullWidth>
                             <Select
-                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '6px'}}
+                                sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px',
+                                '& .MuiPaper-root': {
+                                    borderRadius: 12,
+                                    backgroundColor: theme.palette.background.secondary,
+                                    color: theme.palette.typography.primary,
+                                    boxShadow: 'rgb(0 0 0 / 24%) 12px 16px 24px, rgb(0 0 0 / 24%) 12px 8px 12px, rgb(0 0 0 / 32%) 4px 4px 8px',
+                                    '& .MuiMenu-list': {
+                                      padding: '4px 0',
+                                    },
+                                    
+                                  },
+                            }}
                                 defaultValue={form.level}
                                 name="level"
                                 label="Level"
                                 onChange={handleForm}
                                 >
-
-                                <MenuItem sx={{backgroundColor: theme.palette.background.primary}} value={7}>7</MenuItem>
-                                <MenuItem sx={{backgroundColor: theme.palette.background.primary}} value={8}>8</MenuItem>
-                                <MenuItem sx={{backgroundColor: theme.palette.background.primary}} value={9}>9</MenuItem>
-                                <MenuItem sx={{backgroundColor: theme.palette.background.primary, ":hover":theme.palette.background.primary }} value={10}>10</MenuItem>
+                                
+                                    <MenuItem sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.primary}} value={7}>7</MenuItem>
+                                    <MenuItem sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.primary}} value={8}>8</MenuItem>
+                                    <MenuItem sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.primary}} value={9}>9</MenuItem>
+                                    <MenuItem sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.primary}} value={10}>10</MenuItem>
+                    
                             </Select>
                                 <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.level?.message}</FormHelperText>
                             </FormControl>
@@ -206,7 +234,7 @@ const Create = ({setAddButton}) => {
 
                             {/* Submit button */}
                             <Grid sx={{ml:3, mb:3}}  item lg={1} md={5} sm={5} xs={12}>
-                                <Button fullWidth startIcon={<AddIcon />} sx={{ height:'100%' , color: 'typography.white', borderRadius: '12px',  background: `linear-gradient(45deg, #1892ed, #f52a59)`}} onClick={submitForm}></Button>
+                                <Button fullWidth startIcon={<AddIcon />} sx={{ height:'58px' , color: 'typography.white', borderRadius: '12px',  background: `linear-gradient(45deg, #1892ed, #f52a59)`}} onClick={submitForm}></Button>
                             </Grid>     
                     </Grid>
              

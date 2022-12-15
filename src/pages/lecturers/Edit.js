@@ -18,7 +18,9 @@ const Edit = (props) => {
 
     const [errors, setErrors] = useState({});
 
-
+    const navHome = () => {
+        navigate('/')
+    }
     let token = localStorage.getItem('token');
     
     useEffect(() => {
@@ -114,9 +116,9 @@ const Edit = (props) => {
                 >
                <Grid  maxWidth="sm"  container sx={{pl:5, pr:5, pt:5, display: 'flex', flexWrap: 'wrap'}}>
 
-               <Box sx={{pl:5, pr:5, pt:5, mb:5,  gridArea: 'header' }}>
+               <Box sx={{ gridArea: 'header' }}>
                             
-                    <Typography color="customCard.white" gutterBottom variant="h3" component="div">
+                    <Typography color={theme.palette.typography.blue} gutterBottom variant="h3" component="div">
                         Edit a lecturer
                     </Typography>
                        
@@ -219,8 +221,8 @@ const Edit = (props) => {
            
 
                 <Box sx={{ display: 'flex',  justifyContent: 'flex-end', width: '100%'}}>
-                    <Button sx={{mr:5, mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px' , width: '50%' }} >Cancel</Button>
-                    <Button sx={{ mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px', backgroundColor: theme.palette.background.blue, width: '50%'}} onClick={submitForm}>Create</Button>
+                    <Button sx={{mr:5, mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px' , width: '50%' }} onClick={navHome}>Cancel</Button>
+                    <Button sx={{ mt:5 , mb:5, pt:3, pb:3, pl:5, pr:5, color: 'typography.white', border: '1px solid #1892ed', borderRadius: '12px', backgroundColor: theme.palette.background.blue, width: '50%'}} onClick={submitForm}>Update</Button>
                 </Box>
             </Grid>
         </Grid>

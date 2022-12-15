@@ -6,7 +6,7 @@ import { useState } from "react";
 import axios from '../../config/api'
 
 //NAV
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 
 //MUI
 import { styled } from '@mui/system';
@@ -15,7 +15,7 @@ import {Button, Card, Box, Grid, Container, Typography, TextField, ThemeProvider
 
 const LoginForm = (props) => {
 
-    
+    const navigate = useNavigate();
   
     const [form, setForm] = useState({
         email: "",
@@ -40,15 +40,13 @@ const LoginForm = (props) => {
 
 
     const handleClick = () => {
-        console.log("clicked", form)
         axios.post('/login ', {
             email: form.email,
             password: form.password
         })
         .then((response) => {
-            console.log(response.data)
-            //setAuthenticated(true)
             props.onAuthenticated(true, response.data.token)
+            navigate('/')
 
         })
         .catch((err) => {
@@ -57,35 +55,6 @@ const LoginForm = (props) => {
             setErrorMessage(err.response.data.message)
         });
     }
-
-
-        
-    
-       
-        const CustomTextField = styled(TextField)(({ theme }) => ({
-        'label + &': {
-          marginTop: theme.spacing(10),
-          fontColor: theme.palette.typography.white,
-        },
-        '& .MuiFilledInput-input': {
-        borderRadius: 12,
-        position: 'relative',
-        backgroundColor: theme.palette.background.blue,
-        border: '1px solid #1892ed',
-        fontSize: 16,
-        fontColor: theme.palette.typography.white,
-        padding: '10px 26px 10px 12px',
-       
-        '&:hover': {
-            border: '1px solid #1892ed',
-            borderRadius: '12px',
-            backgroundColor: 'transparent'
-          },
-          '&:focus': {
-            backgroundColor: 'transparent'
-          },
-        },
-      }));
 
       
      
@@ -104,12 +73,23 @@ const LoginForm = (props) => {
  
                     <Grid  maxWidth="sm"  container sx={{pl:5, pr:5, pt:5, display: 'flex', flexWrap: 'wrap'}}>
                     
-                        {/* Email */}
 
-                         <Grid item lg={12} md={12} sm={12} xs={12} >
+                        <Container sx={{mb:3, display: 'flex', flexDirection: 'row'}}>
+                            
+                            <Typography variant="h3" color={theme.palette.typography.blue}>
+                                Welcome to CA2
+                            </Typography>
+                        </Container>
+
+                        {/* Email */}
+                       
+                        <Grid item lg={12} md={12} sm={12} xs={12} >
                             <TextField 
                                 inputProps={{
-                                    style: {color: 'white', } 
+                                    style: {color: theme.palette.typography.primary} 
+                                    }}
+                                InputLabelProps={{
+                                    style: { color: theme.palette.typography.blue},
                                     }}
                                 fullWidth  
                                 id="email" 
@@ -117,7 +97,7 @@ const LoginForm = (props) => {
                                 name='email'
                                 type="text"
                                 onChange={handleForm}
-                                sx={{backgroundColor: theme.palette.background.secondary, borderRadius: '12px'}}
+                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
                              
                                
                                 />
@@ -128,15 +108,18 @@ const LoginForm = (props) => {
                         <Grid sx={{mt:5}} item lg={12} md={12} sm={12} xs={12} >
                             <TextField 
                                 inputProps={{
-                                    style: {color: 'white',} 
-                                }}
+                                    style: {color: theme.palette.typography.primary} 
+                                    }}
+                                InputLabelProps={{
+                                    style: { color: theme.palette.typography.blue},
+                                    }}
                                 fullWidth  
                                 id="password" 
                                 label="Password" 
                                 name='password'
-                                type="text"
+                                type="password"
                                 onChange={handleForm}
-                                sx={{backgroundColor: theme.palette.background.secondary, borderRadius: '12px'}}
+                                sx={{backgroundColor: theme.palette.background.form, border: '1px solid #494E58', borderRadius: '12px'}}
                                 />
                         </Grid> 
                         

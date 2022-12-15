@@ -9,7 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 import theme from '../../theme'
 
-const Create = ({setAddButton}) => {
+const Create = ({setAddButton, updateEnrolments}) => {
     const navigate = useNavigate();
     let token = localStorage.getItem('token')
 
@@ -94,6 +94,7 @@ const Create = ({setAddButton}) => {
             .then((response) => {
                 console.log(response.data);
                 setAddButton(false)
+                updateEnrolments()
             })
             .catch((err) => {
                 console.error(err);
@@ -109,14 +110,14 @@ const Create = ({setAddButton}) => {
         /* Courses */
         const coursesList = courses?.map(course => {
             return (    
-                <MenuItem key={course?.id} value={course?.id}>{course?.title}</MenuItem>     
+                <MenuItem sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.primary}} key={course?.id} value={course?.id}>{course?.title}</MenuItem>     
             )
         }) 
 
         /* Lecturers */
         const lecturersList = lecturers?.map(lecturers => {
             return (
-                <MenuItem  key={lecturers?.id} value={lecturers?.id}>{lecturers?.name}</MenuItem>     
+                <MenuItem sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.primary}}  key={lecturers?.id} value={lecturers?.id}>{lecturers?.name}</MenuItem>     
             )
         }) 
 
@@ -182,10 +183,10 @@ const Create = ({setAddButton}) => {
                             name="status"
                             onChange={handleForm}
                             >
-                        <MenuItem value={"interested"}>Interested</MenuItem>     
-                        <MenuItem value={"assigned"}>Assigned</MenuItem>   
-                        <MenuItem value={"associate"}>Associate</MenuItem>   
-                        <MenuItem value={"career_break"}>Career Break</MenuItem>   
+                        <MenuItem sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.primary}} value={"interested"}>Interested</MenuItem>     
+                        <MenuItem sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.primary}} value={"assigned"}>Assigned</MenuItem>   
+                        <MenuItem sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.primary}} value={"associate"}>Associate</MenuItem>   
+                        <MenuItem sx={{color: theme.palette.typography.primary, backgroundColor: theme.palette.background.primary}} value={"career_break"}>Career Break</MenuItem>   
                         </Select>
                         <FormHelperText sx={{mt:1, color: theme.palette.typography.darkRed}}>{errors.status?.message}</FormHelperText>
                     </FormControl>    
@@ -245,8 +246,8 @@ const Create = ({setAddButton}) => {
 
 
                 {/* Submit button */}
-                <Grid sx={{ml:3, mb:3}}  item lg={2} md={5} sm={5} xs={12}>
-                    <Button fullWidth startIcon={<AddIcon />} sx={{ height:'100%' , color: 'typography.white', borderRadius: '12px',  background: `linear-gradient(45deg, #1892ed, #f52a59)`}} onClick={submitForm}></Button>
+                <Grid sx={{ml:3}} fullWidth item lg={2} md={5} sm={5} xs={12}>
+                    <Button fullWidth startIcon={<AddIcon />} sx={{ height:'58px' , color: 'typography.white', borderRadius: '12px',  background: `linear-gradient(45deg, #1892ed, #f52a59)`}} onClick={submitForm}></Button>
                 </Grid>      
 
 

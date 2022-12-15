@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import LoginForm from "../components/auth/LoginForm";
 
@@ -14,29 +14,22 @@ import LecturersIndex from './lecturers/Index'
 import EnrolmentsIndex from './enrolments/Index'
 
 const Home = (props) => {
-  
-  const [value, setValue] = useState('1');
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+
+ 
+
+ 
 
   if (props.authenticated){
     return (
       <>
       <Container maxWidth="xl">
       <Box sx={{ width: '100%', typography: 'body1' }}>
-              <TabContext value={value}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                  <TabList onChange={handleChange} aria-label="lab API tabs example">
-                    <Tab sx={{color: 'f52a59'}} textColor='#f52a59' label="Courses" value="1" />
-                    <Tab label="Lecturers" value="2" />
-                    <Tab label="enrolments" value="3" />
-                  </TabList>
-                </Box>
-                <TabPanel value="1"><CoursesIndex/></TabPanel>
-                <TabPanel value="2"><LecturersIndex/></TabPanel>
-                <TabPanel value="3"><EnrolmentsIndex/></TabPanel>
+              <TabContext value={props.value}>
+                
+                <TabPanel value={0}><CoursesIndex/></TabPanel>
+                <TabPanel value={1}><LecturersIndex/></TabPanel>
+                <TabPanel value={2}><EnrolmentsIndex/></TabPanel>
             </TabContext>
           </Box>
       </Container>

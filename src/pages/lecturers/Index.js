@@ -10,6 +10,10 @@ import { useNavigate, Link } from 'react-router-dom';
 //Components
 import StripedDataGrid from '../../components/StripedDataGrid';
 import Create from './Create';
+import Loading from '../../components/Loading'
+//motion
+import { motion } from "framer-motion";
+
 
 //mui
 import { Box, ThemeProvider } from '@mui/system';
@@ -93,7 +97,7 @@ const Index = ( props) => {
                 return  <Delete setEnrolmentChecker={setEnrolmentChecker}
                  startIcon={<DeleteIcon />} 
                 id={params.row.id} 
-                resource="courses"
+                resource="lecturers"
                 deleteCallback={deleteCallback}
             />
 
@@ -115,7 +119,19 @@ const Index = ( props) => {
        }
     }
 
-    
+    const updateLecturers = () => {
+        axios.get('/lecturers/', {
+            headers:{
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            setLecturers(response.data.data)
+        })
+        .catch((err) => {
+            console.error(err)
+        });
+    }
 
 
     const deleteCallback = (id) => {
@@ -155,34 +171,66 @@ const Index = ( props) => {
 
         html = (
             <>
-                <Create setAddButton={setAddButton}/>
+            <motion.div
+                initial={{ x: 0, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 0, opacity: 0 }}
+                transition={{
+                type: "spring",
+                stiffness: 100,
+                damping: 20
+                }}
+            >
+                <Create  updateLecturers={updateLecturers} setAddButton={setAddButton}/>
+            </motion.div>
             </>
         )
 
     }
 
 
-    if(!lecturers) return <h3>There are no lecturers</h3>
+    if(!lecturers) return(
+        <Container 
+        maxWidth="xl"
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: '100vh' }}>
+            <Loading/>
+        </Container>
+    )
 
     return (
         <>
         <ThemeProvider theme={theme}>
         <Container maxWidth="xl">
 
+        <motion.div
+            
+            initial={{ x: 0, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 0, opacity: 0 }}
+            transition={{
+            type: "spring",
+            stiffness: 100,
+            damping: 20
+            }}
+            >
                 {html}
                 {checkerHtml}
 
 
-                <Box sx={{ height: 400, width: '100%' }}>
+                <Box sx={{ width: '100%' }}>
                 <StripedDataGrid
-                      getRowClassName={(params) =>
-                        params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
-                      }
+                    getRowClassName={(params) =>
+                    params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
+                    }
                     rows={rows}
                     columns={columns}
-                    pageSize={5}
-                    rowsPerPageOptions={[5]}
-                    
+                    pageSize={lecturers?.length}
+                    rowsPerPageOptions={[lecturers?.length]}
+                    autoHeight
                     disableSelectionOnClick
                     experimentalFeatures={{ newEditingApi: true }}
                     sx={{
@@ -194,6 +242,7 @@ const Index = ( props) => {
                       }}
                 />
             </Box>
+        </motion.div>    
         </Container>    
         </ThemeProvider>
         </>

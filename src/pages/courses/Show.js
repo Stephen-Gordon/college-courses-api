@@ -8,7 +8,7 @@ import { Box, Typography, Container, ThemeProvider, Grid } from '@mui/material';
 
 //Components
 import StripedDataGrid from '../../components/StripedDataGrid';
-import AnimatedGradientText from '../../components/AnimatedGradientText'
+
 //THEME
 import theme from '../../theme'
 const Show = () => {

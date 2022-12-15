@@ -9,6 +9,9 @@ import { useNavigate, Link } from 'react-router-dom';
 
 //components
 import StripedDataGrid from '../../components/StripedDataGrid';
+import Loading from '../../components/Loading';
+//motion
+import { motion } from "framer-motion";
 
 //mui
 import { Box, ThemeProvider } from '@mui/system';
@@ -21,7 +24,8 @@ import Delete from './Delete';
 
 const linkStyle = {
     textDecoration: "none",
-    color: '#1892ed'
+    color: '#1892ed',
+    
 };
 
 
@@ -63,6 +67,8 @@ const Index = (props) => {
            
    }; 
       
+
+      
    
         let checkerHtml;
         
@@ -85,11 +91,10 @@ const Index = (props) => {
         renderCell: (params) => {
             return  <Link  
             style={linkStyle}
-
-           component={Link}
-           to={`/courses/${params.row.id}`}
+            component={Link}
+            to={`/courses/${params.row.id}`}
           
-         >
+            >
             {params.row.courseTitle}
          </Link>
 
@@ -146,6 +151,20 @@ const Index = (props) => {
     
     
 
+    const updateCourses = () => {
+        axios.get('/courses/', {
+            headers:{
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            setCourses(response.data.data)
+        })
+        .catch((err) => {
+            console.error(err)
+        });
+    }
+
     let html = (
         <>
             <Button sx={{p:1, color: 'typography.white', border: 'none', borderRadius: '12px', background: `linear-gradient(45deg, #1892ed, #f52a59)` }}  onClick={() => {setAddButton(true)}}>
@@ -159,7 +178,21 @@ const Index = (props) => {
 
         html = (
             <>
-                <Create setAddButton={setAddButton}/>
+             <motion.div
+            
+            initial={{ x: 0, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 0, opacity: 0 }}
+            transition={{
+            type: "spring",
+            stiffness: 100,
+            damping: 20
+            }}
+            >
+
+            <Create updateCourses={updateCourses} setAddButton={setAddButton}/>
+        </motion.div>
+                
             </>
         )
 
@@ -168,7 +201,17 @@ const Index = (props) => {
     
   
 
-    if(!courses) return <h3>Loading</h3>
+    if(!courses) return(
+        <Container 
+        maxWidth="xl"
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: '100vh' }}>
+            <Loading/>
+        </Container>
+    )
 
     return (
         <>
@@ -176,12 +219,24 @@ const Index = (props) => {
 
    
         <Container maxWidth="xl">
-
+        <motion.div
+            
+            initial={{ x: 0, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 0, opacity: 0 }}
+            transition={{
+            type: "spring",
+            stiffness: 100,
+            damping: 20
+            }}
+            >
             
             {html}
             {checkerHtml}
 
+
             <Box sx={{ height: 400, width: '100%' }}>
+                
                 
                 <StripedDataGrid
                     getRowClassName={(params) =>
@@ -189,12 +244,14 @@ const Index = (props) => {
                     }
                     rows={rows}
                     columns={columns}
-                    pageSize={5}
-                    rowsPerPageOptions={[5]}
-                    
+                    pageSize={courses?.length}
+                    rowsPerPageOptions={[courses?.length]}
+                    autoHeight
                     disableSelectionOnClick
                     experimentalFeatures={{ newEditingApi: true }}
                     sx={{
+                        
+                        fontWeight: '500px',
                         mt:5, 
                         color: theme.palette.typography.light,
                         border: 2,
@@ -203,6 +260,7 @@ const Index = (props) => {
                       }}
                 />
             </Box>
+            </motion.div>
         </Container>
 
         </ThemeProvider>
